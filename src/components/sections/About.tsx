@@ -1,46 +1,25 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
-import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
+import { motion, useScroll, useTransform, useInView } from "framer-motion";
 
-const funFacts = [
-  { emoji: "☕", text: "Kopi sebelum code" },
-  { emoji: "🎮", text: "Gamer sejati" },
-  { emoji: "🌙", text: "Night owl developer" },
-  { emoji: "🚀", text: "Ship fast, iterate faster" },
-];
-
-const techStack = [
-  "Next.js", "React", "TypeScript", "Tailwind CSS",
-  "Node.js", "PostgreSQL", "Prisma", "Vercel"
-];
-
-// Random coding quotes
-const quotes = [
-  "Code is like humor. When you have to explain it, it's bad.",
-  "First, solve the problem. Then, write the code.",
-  "Any fool can write code that a computer can understand. Good programmers write code that humans can understand.",
-  "The best error message is the one that never shows up.",
+const stats = [
+  { number: "4+", label: "Projek Siap" },
+  { number: "100%", label: "Passion" },
+  { number: "24/7", label: "Code Mode" },
+  { number: "1", label: "Mission" },
 ];
 
 export default function About() {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
-  const [currentQuote, setCurrentQuote] = useState(0);
-  const [coffeeCount, setCoffeeCount] = useState(0);
 
-  // Rotate quotes
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentQuote((prev) => (prev + 1) % quotes.length);
-    }, 5000);
-    return () => clearInterval(interval);
-  }, []);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start end", "end start"],
+  });
 
-  // Fun coffee counter
-  const addCoffee = () => {
-    setCoffeeCount((prev) => prev + 1);
-  };
+  const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
 
   return (
     <section id="about" ref={containerRef} className="section-padding relative overflow-hidden">
@@ -61,88 +40,103 @@ export default function About() {
             Tentang Saya
           </span>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-6">
-            Siapa
-            <span className="text-gradient"> Khalid?</span>
+            Membina Digital
+            <span className="text-gradient"> Excellence</span>
           </h2>
+          <p className="text-lg text-dark-400 max-w-2xl mx-auto">
+            Saya transform idea kompleks menjadi solusi digital yang elegan dan mesra pengguna.
+          </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
-          {/* Left Column - Fun Interactive Section */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8 }}
-            className="space-y-8"
-          >
-            {/* Avatar with fun interaction */}
-            <div className="relative max-w-sm mx-auto lg:mx-0">
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+          {/* Left Column - Image & Stats */}
+          <motion.div style={{ y }} className="relative">
+            {/* Main Image */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={isInView ? { opacity: 1, scale: 1 } : {}}
+              transition={{ duration: 0.8 }}
+              className="relative aspect-square max-w-md mx-auto"
+            >
+              {/* Decorative Border */}
+              <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary-500 to-accent-500 p-[2px]">
+                <div className="w-full h-full bg-dark-900 rounded-3xl" />
+              </div>
+
+              {/* Image Container */}
+              <div className="absolute inset-4 rounded-2xl overflow-hidden bg-gradient-to-br from-primary-500/20 to-accent-500/20">
+                <div className="absolute inset-0 flex items-center justify-center">
+                  {/* Avatar */}
+                  <div className="w-48 h-48 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center">
+                    <span className="text-6xl font-display font-bold text-white">K</span>
+                  </div>
+                </div>
+
+                {/* Decorative Elements */}
+                <div className="absolute top-4 right-4 w-20 h-20 border border-white/20 rounded-full" />
+                <div className="absolute bottom-4 left-4 w-16 h-16 border border-white/20 rounded-full" />
+              </div>
+
+              {/* Floating Badge */}
               <motion.div
-                className="aspect-square rounded-3xl bg-gradient-to-br from-primary-500/20 to-accent-500/20 border border-white/10 flex items-center justify-center overflow-hidden"
-                whileHover={{ scale: 1.02 }}
+                initial={{ opacity: 0, x: 20 }}
+                animate={isInView ? { opacity: 1, x: 0 } : {}}
+                transition={{ duration: 0.6, delay: 0.4 }}
+                className="absolute -right-4 top-1/4 glass-card !p-4"
               >
-                <div className="text-center p-8">
-                  <motion.div
-                    className="text-8xl mb-4"
-                    animate={{ rotate: [0, 10, -10, 0] }}
-                    transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
-                  >
-                    👨‍💻
-                  </motion.div>
-                  <p className="text-xl font-display font-bold text-white">Khalid</p>
-                  <p className="text-dark-400 text-sm">Web Developer</p>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center">
+                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-white">Fast Learner</p>
+                    <p className="text-xs text-dark-400">Always Improving</p>
+                  </div>
                 </div>
               </motion.div>
 
-              {/* Floating fun badge */}
+              {/* Floating Badge 2 */}
               <motion.div
-                initial={{ opacity: 0, scale: 0 }}
-                animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                transition={{ duration: 0.5, delay: 0.5 }}
-                className="absolute -right-4 -bottom-4 glass-card !p-3"
+                initial={{ opacity: 0, x: -20 }}
+                animate={isInView ? { opacity: 1, x: 0 } : {}}
+                transition={{ duration: 0.6, delay: 0.6 }}
+                className="absolute -left-4 bottom-1/4 glass-card !p-4"
               >
-                <div className="flex items-center gap-2">
-                  <span className="text-2xl">🇲🇾</span>
-                  <span className="text-sm text-white font-medium">Malaysia</span>
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-accent-500 to-primary-500 flex items-center justify-center">
+                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <p className="text-sm font-semibold text-white">Malaysia</p>
+                    <p className="text-xs text-dark-400">Based Developer</p>
+                  </div>
                 </div>
               </motion.div>
-            </div>
+            </motion.div>
 
-            {/* Interactive Coffee Counter - Fun Element! */}
+            {/* Stats */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="glass-card text-center"
+              transition={{ duration: 0.6, delay: 0.8 }}
+              className="grid grid-cols-2 gap-4 mt-8"
             >
-              <p className="text-dark-400 text-sm mb-3">Klik untuk bagi saya kopi! ☕</p>
-              <motion.button
-                onClick={addCoffee}
-                className="text-6xl mb-3 cursor-pointer hover:scale-110 transition-transform"
-                whileTap={{ scale: 0.9, rotate: -10 }}
-              >
-                ☕
-              </motion.button>
-              <p className="text-2xl font-display font-bold text-gradient">
-                {coffeeCount} kopi hari ini
-              </p>
-              {coffeeCount >= 5 && (
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="text-sm text-accent-400 mt-2"
+              {stats.map((stat, index) => (
+                <motion.div
+                  key={stat.label}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ duration: 0.4, delay: 0.8 + index * 0.1 }}
+                  className="glass-card text-center"
                 >
-                  Wah, terima kasih banyak! 🚀
-                </motion.p>
-              )}
-              {coffeeCount >= 10 && (
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="text-sm text-primary-400 mt-1"
-                >
-                  Sekarang saya boleh code sampai subuh! 🌙
-                </motion.p>
-              )}
+                  <p className="text-3xl md:text-4xl font-display font-bold text-gradient">{stat.number}</p>
+                  <p className="text-sm text-dark-400 mt-1">{stat.label}</p>
+                </motion.div>
+              ))}
             </motion.div>
           </motion.div>
 
@@ -153,88 +147,77 @@ export default function About() {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="glass-card"
             >
-              <h3 className="text-xl font-display font-bold text-white mb-4">
-                Salam! 👋
+              <h3 className="text-2xl font-display font-bold text-white mb-4">
+                Salam, saya Khalid
               </h3>
               <p className="text-dark-400 leading-relaxed mb-4">
-                Saya Khalid, seorang web developer dari Malaysia yang passionate dalam
-                membangunkan projek web yang <span className="text-primary-400">praktikal</span> dan{" "}
+                Saya seorang web developer dari Malaysia yang passionate dalam membangunkan
+                projek web yang <span className="text-primary-400">praktikal</span> dan{" "}
                 <span className="text-accent-400">mesra pengguna</span>.
               </p>
               <p className="text-dark-400 leading-relaxed">
-                Fokus saya adalah pada kegunaan sebenar - bukan sekadar cantik,
-                tetapi benar-benar membantu pengguna mencapai matlamat mereka dengan
-                cara yang paling ringkas dan berkesan.
+                Fokus saya adalah pada kegunaan sebenar - bukan sekadar cantik, tetapi
+                benar-benar membantu pengguna mencapai matlamat mereka dengan cara yang
+                paling ringkas dan berkesan.
               </p>
             </motion.div>
 
-            {/* Fun Facts */}
+            {/* What I Do */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-              <h4 className="text-lg font-semibold text-white mb-4">Fun Facts</h4>
-              <div className="grid grid-cols-2 gap-3">
-                {funFacts.map((fact, index) => (
+              <h4 className="text-lg font-semibold text-white mb-4">Apa Yang Saya Buat</h4>
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  { icon: "M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z", label: "Web Apps" },
+                  { icon: "M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z", label: "UI/UX" },
+                  { icon: "M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4", label: "Clean Code" },
+                  { icon: "M13 10V3L4 14h7v7l9-11h-7z", label: "Fast Sites" },
+                ].map((item, index) => (
                   <motion.div
-                    key={fact.text}
-                    initial={{ opacity: 0, scale: 0.8 }}
+                    key={item.label}
+                    initial={{ opacity: 0, scale: 0.9 }}
                     animate={isInView ? { opacity: 1, scale: 1 } : {}}
                     transition={{ duration: 0.4, delay: 0.5 + index * 0.1 }}
-                    whileHover={{ scale: 1.05, y: -2 }}
-                    className="p-4 rounded-xl bg-white/5 border border-white/10 hover:border-primary-500/50 transition-all cursor-default"
+                    className="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/10"
                   >
-                    <span className="text-2xl block mb-2">{fact.emoji}</span>
-                    <span className="text-sm text-dark-300">{fact.text}</span>
+                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary-500/20 to-accent-500/20 flex items-center justify-center text-primary-400">
+                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={item.icon} />
+                      </svg>
+                    </div>
+                    <span className="text-sm text-dark-300">{item.label}</span>
                   </motion.div>
                 ))}
               </div>
             </motion.div>
 
-            {/* Tech Stack Pills */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.6 }}
-            >
-              <h4 className="text-lg font-semibold text-white mb-4">Tech Stack Kegemaran</h4>
-              <div className="flex flex-wrap gap-2">
-                {techStack.map((tech, index) => (
-                  <motion.span
-                    key={tech}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={isInView ? { opacity: 1, y: 0 } : {}}
-                    transition={{ duration: 0.3, delay: 0.7 + index * 0.05 }}
-                    whileHover={{ scale: 1.1, y: -2 }}
-                    className="px-4 py-2 rounded-full text-sm font-medium bg-gradient-to-r from-primary-500/20 to-accent-500/20 text-white border border-white/10 hover:border-primary-500/50 transition-all cursor-default"
-                  >
-                    {tech}
-                  </motion.span>
-                ))}
-              </div>
-            </motion.div>
-
-            {/* Rotating Quote */}
+            {/* CTA */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.8 }}
-              className="glass-card relative overflow-hidden"
+              className="flex flex-wrap gap-4"
             >
-              <div className="absolute top-2 right-3 text-4xl opacity-20">💭</div>
-              <p className="text-sm text-dark-500 mb-2">Quote of the moment:</p>
-              <motion.p
-                key={currentQuote}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                className="text-dark-300 italic"
+              <motion.a
+                href="#work"
+                className="btn-primary"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
               >
-                &ldquo;{quotes[currentQuote]}&rdquo;
-              </motion.p>
+                Lihat Projek Saya
+              </motion.a>
+              <motion.a
+                href="#contact"
+                className="btn-secondary"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                Hubungi Saya
+              </motion.a>
             </motion.div>
           </div>
         </div>

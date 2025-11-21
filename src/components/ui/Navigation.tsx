@@ -6,10 +6,10 @@ import { cn } from "@/lib/utils";
 
 const navLinks = [
   { href: "#home", label: "Home" },
-  { href: "#about", label: "Tentang" },
-  { href: "#skills", label: "Servis" },
-  { href: "#work", label: "Projek" },
-  { href: "#contact", label: "Hubungi" },
+  { href: "#about", label: "About" },
+  { href: "#skills", label: "Skills" },
+  { href: "#work", label: "Work" },
+  { href: "#contact", label: "Contact" },
 ];
 
 export default function Navigation() {
@@ -102,7 +102,7 @@ export default function Navigation() {
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
             >
-              Hubungi
+              Let&apos;s Talk
               <svg
                 className="w-4 h-4"
                 fill="none"
@@ -201,7 +201,7 @@ export default function Navigation() {
                 className="mt-8 flex items-center justify-center gap-2 w-full px-5 py-3 bg-gradient-to-r from-primary-600 to-primary-500 rounded-lg font-semibold text-white"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Hubungi
+                Let&apos;s Talk
               </motion.a>
             </motion.nav>
           </motion.div>
