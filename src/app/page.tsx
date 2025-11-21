@@ -6,32 +6,35 @@ import Contact from "@/components/sections/Contact";
 import Footer from "@/components/ui/Footer";
 import Stars from "@/components/ui/Stars";
 import Cursor from "@/components/ui/Cursor";
+import PageWrapper from "@/components/ui/PageWrapper";
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen bg-dark-950 noise">
-      {/* Custom Cursor */}
-      <Cursor />
+    <PageWrapper>
+      <main className="relative min-h-screen bg-dark-950 noise">
+        {/* Custom Cursor */}
+        <Cursor />
 
-      {/* Galaxy Stars Background */}
-      <Stars />
+        {/* Galaxy Stars Background */}
+        <Stars />
 
-      {/* Cursor follower effect container */}
-      <div className="fixed inset-0 pointer-events-none z-50">
-        <div className="absolute w-96 h-96 bg-primary-500/5 rounded-full blur-3xl" />
-      </div>
+        {/* Cursor follower effect container */}
+        <div className="fixed inset-0 pointer-events-none z-50">
+          <div className="absolute w-96 h-96 bg-primary-500/5 rounded-full blur-3xl" />
+        </div>
 
-      {/* Navigation */}
-      <Navigation />
+        {/* Navigation */}
+        <Navigation />
 
-      {/* Sections */}
-      <Hero />
-      <About />
-      <Work />
-      <Contact />
+        {/* Sections */}
+        <Hero />
+        <About />
+        <Work />
+        <Contact />
 
-      {/* Footer */}
-      <Footer />
-    </main>
+        {/* Footer */}
+        <Footer />
+      </main>
+    </PageWrapper>
   );
 }
