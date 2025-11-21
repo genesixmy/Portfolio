@@ -2,6 +2,7 @@ import Navigation from "@/components/ui/Navigation";
 import Hero from "@/components/sections/Hero";
 import About from "@/components/sections/About";
 import Work from "@/components/sections/Work";
+import Game from "@/components/sections/Game";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/ui/Footer";
 import Stars from "@/components/ui/Stars";
@@ -30,6 +31,7 @@ export default function Home() {
         <Hero />
         <About />
         <Work />
+        <Game />
         <Contact />
 
         {/* Footer */}

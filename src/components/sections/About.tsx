@@ -2,7 +2,6 @@
 
 import { useRef, useState } from "react";
 import { motion, useScroll, useTransform, useInView, useMotionValue, useSpring } from "framer-motion";
-import AsteroidGame from "@/components/ui/AsteroidGame";
 
 const stats = [
   { number: "4+", label: "Projek Siap" },
@@ -351,15 +350,6 @@ export default function About() {
               transition={{ duration: 0.6, delay: 0.4 }}
             >
               <MoodSelector />
-            </motion.div>
-
-            {/* Asteroid Game */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.5 }}
-            >
-              <AsteroidGame />
             </motion.div>
 
             {/* CTA */}
