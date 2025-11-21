@@ -53,13 +53,13 @@ function TiltCard({ children, className }: { children: React.ReactNode; classNam
   );
 }
 
-// Interactive click counter
-function ClickCounter() {
-  const [clicks, setClicks] = useState(0);
+// Interactive coffee counter
+function CoffeeCounter() {
+  const [coffees, setCoffees] = useState(0);
   const [particles, setParticles] = useState<{ id: number; x: number; y: number }[]>([]);
 
   const handleClick = (e: React.MouseEvent) => {
-    setClicks(c => c + 1);
+    setCoffees(c => c + 1);
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
@@ -82,53 +82,73 @@ function ClickCounter() {
           key={particle.id}
           initial={{ opacity: 1, scale: 0, x: particle.x, y: particle.y }}
           animate={{ opacity: 0, scale: 2, y: particle.y - 50 }}
-          className="absolute text-2xl pointer-events-none"
+          className="absolute text-2xl pointer-events-none text-amber-400"
           style={{ left: particle.x - 12, top: particle.y - 12 }}
         >
           +1
         </motion.span>
       ))}
       <div className="flex items-center gap-4">
-        <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center">
-          <motion.svg
-            className="w-7 h-7 text-white"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            animate={{ rotate: clicks * 10 }}
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
-          </motion.svg>
-        </div>
+        <motion.div
+          className="w-14 h-14 rounded-xl bg-gradient-to-br from-amber-600 to-amber-800 flex items-center justify-center"
+          animate={{ rotate: coffees > 0 ? [0, -10, 10, -5, 5, 0] : 0 }}
+          transition={{ duration: 0.5 }}
+          key={coffees}
+        >
+          <svg className="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8h1a4 4 0 110 8h-1M3 8h14v9a4 4 0 01-4 4H7a4 4 0 01-4-4V8zm0-3h14v3H3V5z" />
+          </svg>
+        </motion.div>
         <div>
           <motion.p
-            key={clicks}
-            initial={{ scale: 1.5, color: "#a855f7" }}
+            key={coffees}
+            initial={{ scale: 1.5, color: "#f59e0b" }}
             animate={{ scale: 1, color: "#ffffff" }}
             className="text-3xl font-display font-bold text-white"
           >
-            {clicks}
+            {coffees}
           </motion.p>
-          <p className="text-sm text-dark-400">Clicks! Tekan lagi!</p>
+          <p className="text-sm text-dark-400">Kopi hari ini! Tekan lagi!</p>
         </div>
       </div>
     </motion.div>
   );
 }
 
-// Interactive mood selector
+// Interactive mood selector with SVG icons
 function MoodSelector() {
   const moods = [
-    { emoji: "🔥", label: "On Fire", color: "from-orange-500 to-red-500" },
-    { emoji: "💡", label: "Creative", color: "from-yellow-500 to-orange-500" },
-    { emoji: "🚀", label: "Productive", color: "from-blue-500 to-purple-500" },
-    { emoji: "☕", label: "Coding", color: "from-amber-700 to-amber-500" },
+    {
+      icon: "M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z",
+      label: "On Fire",
+      color: "from-orange-500 to-red-500"
+    },
+    {
+      icon: "M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z",
+      label: "Creative",
+      color: "from-yellow-500 to-orange-500"
+    },
+    {
+      icon: "M13 10V3L4 14h7v7l9-11h-7z",
+      label: "Productive",
+      color: "from-blue-500 to-purple-500"
+    },
+    {
+      icon: "M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4",
+      label: "Coding",
+      color: "from-primary-500 to-accent-500"
+    },
   ];
   const [selected, setSelected] = useState(2);
 
   return (
     <div className="glass-card">
-      <p className="text-sm text-dark-400 mb-3">Status hari ini:</p>
+      <div className="flex items-center gap-2 mb-3">
+        <svg className="w-4 h-4 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <p className="text-sm text-dark-400">Status hari ini:</p>
+      </div>
       <div className="flex gap-2">
         {moods.map((mood, index) => (
           <motion.button
@@ -137,12 +157,14 @@ function MoodSelector() {
             className={`relative flex-1 p-3 rounded-xl text-center transition-all ${
               selected === index
                 ? `bg-gradient-to-br ${mood.color} text-white`
-                : "bg-white/5 hover:bg-white/10"
+                : "bg-white/5 hover:bg-white/10 text-dark-400"
             }`}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <span className="text-2xl block mb-1">{mood.emoji}</span>
+            <svg className="w-6 h-6 mx-auto mb-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={mood.icon} />
+            </svg>
             <span className="text-xs">{mood.label}</span>
             {selected === index && (
               <motion.div
@@ -312,13 +334,13 @@ export default function About() {
               </p>
             </motion.div>
 
-            {/* Interactive Click Counter */}
+            {/* Interactive Coffee Counter */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.3 }}
             >
-              <ClickCounter />
+              <CoffeeCounter />
             </motion.div>
 
             {/* Interactive Mood Selector */}
@@ -328,42 +350,6 @@ export default function About() {
               transition={{ duration: 0.6, delay: 0.4 }}
             >
               <MoodSelector />
-            </motion.div>
-
-            {/* What I Do */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.5 }}
-            >
-              <h4 className="text-lg font-semibold text-white mb-4">Apa Yang Saya Buat</h4>
-              <div className="grid grid-cols-2 gap-4">
-                {[
-                  { icon: "M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z", label: "Web Apps" },
-                  { icon: "M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z", label: "UI/UX" },
-                  { icon: "M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4", label: "Clean Code" },
-                  { icon: "M13 10V3L4 14h7v7l9-11h-7z", label: "Fast Sites" },
-                ].map((item, index) => (
-                  <motion.div
-                    key={item.label}
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={isInView ? { opacity: 1, scale: 1 } : {}}
-                    transition={{ duration: 0.4, delay: 0.6 + index * 0.1 }}
-                    whileHover={{
-                      scale: 1.05,
-                      backgroundColor: "rgba(168, 85, 247, 0.1)"
-                    }}
-                    className="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/10 cursor-pointer transition-colors"
-                  >
-                    <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-primary-500/20 to-accent-500/20 flex items-center justify-center text-primary-400">
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={item.icon} />
-                      </svg>
-                    </div>
-                    <span className="text-sm text-dark-300">{item.label}</span>
-                  </motion.div>
-                ))}
-              </div>
             </motion.div>
 
             {/* CTA */}
