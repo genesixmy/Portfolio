@@ -12,8 +12,8 @@ const contactInfo = [
       </svg>
     ),
     label: "Email",
-    value: "khalid@example.com",
-    href: "mailto:khalid@example.com",
+    value: "grkalidz@gmail.com",
+    href: "mailto:grkalidz@gmail.com",
   },
   {
     icon: (
@@ -46,7 +46,7 @@ export default function Contact() {
     message: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle");
 
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
@@ -54,11 +54,46 @@ export default function Contact() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    setSubmitStatus("idle");
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          access_key: "YOUR_ACCESS_KEY", // User needs to get this from web3forms.com
+          name: formState.name,
+          email: formState.email,
+          subject: `Portfolio Contact: ${formState.subject}`,
+          message: formState.message,
+          to: "grkalidz@gmail.com",
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setSubmitStatus("success");
+        setFormState({ name: "", email: "", subject: "", message: "" });
+      } else {
+        // Fallback to mailto if Web3Forms not configured
+        const mailtoLink = `mailto:grkalidz@gmail.com?subject=${encodeURIComponent(`Portfolio: ${formState.subject}`)}&body=${encodeURIComponent(`Name: ${formState.name}\nEmail: ${formState.email}\n\nMessage:\n${formState.message}`)}`;
+        window.location.href = mailtoLink;
+        setSubmitStatus("success");
+        setFormState({ name: "", email: "", subject: "", message: "" });
+      }
+    } catch {
+      // Fallback to mailto on error
+      const mailtoLink = `mailto:grkalidz@gmail.com?subject=${encodeURIComponent(`Portfolio: ${formState.subject}`)}&body=${encodeURIComponent(`Name: ${formState.name}\nEmail: ${formState.email}\n\nMessage:\n${formState.message}`)}`;
+      window.location.href = mailtoLink;
+      setSubmitStatus("success");
+      setFormState({ name: "", email: "", subject: "", message: "" });
+    }
+
     setIsSubmitting(false);
-    setIsSubmitted(true);
-    setFormState({ name: "", email: "", subject: "", message: "" });
-    setTimeout(() => setIsSubmitted(false), 5000);
+    setTimeout(() => setSubmitStatus("idle"), 5000);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -214,10 +249,10 @@ export default function Contact() {
                   className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white focus:outline-none focus:border-primary-500 focus:ring-1 focus:ring-primary-500 transition-colors"
                 >
                   <option value="" className="bg-dark-900">Select a subject</option>
-                  <option value="project" className="bg-dark-900">New Project</option>
-                  <option value="collaboration" className="bg-dark-900">Collaboration</option>
-                  <option value="question" className="bg-dark-900">Question</option>
-                  <option value="other" className="bg-dark-900">Other</option>
+                  <option value="New Project" className="bg-dark-900">New Project</option>
+                  <option value="Collaboration" className="bg-dark-900">Collaboration</option>
+                  <option value="Question" className="bg-dark-900">Question</option>
+                  <option value="Other" className="bg-dark-900">Other</option>
                 </select>
               </div>
 
@@ -262,13 +297,23 @@ export default function Contact() {
                 )}
               </motion.button>
 
-              {isSubmitted && (
+              {submitStatus === "success" && (
                 <motion.div
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   className="mt-4 p-4 rounded-lg bg-green-500/10 border border-green-500/20 text-green-400 text-center"
                 >
-                  Thank you! Your message has been sent successfully.
+                  Terima kasih! Mesej anda telah dihantar.
+                </motion.div>
+              )}
+
+              {submitStatus === "error" && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-4 p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-center"
+                >
+                  Maaf, berlaku masalah. Sila cuba lagi.
                 </motion.div>
               )}
             </form>
