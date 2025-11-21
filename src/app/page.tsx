@@ -5,10 +5,14 @@ import Work from "@/components/sections/Work";
 import Contact from "@/components/sections/Contact";
 import Footer from "@/components/ui/Footer";
 import Stars from "@/components/ui/Stars";
+import Cursor from "@/components/ui/Cursor";
 
 export default function Home() {
   return (
     <main className="relative min-h-screen bg-dark-950 noise">
+      {/* Custom Cursor */}
+      <Cursor />
+
       {/* Galaxy Stars Background */}
       <Stars />
 
