@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { motion, useMotionValue } from "framer-motion";
+import { useEffect, useState, useRef } from "react";
+import { motion } from "framer-motion";
 
 interface ClickEffect {
   id: number;
@@ -10,16 +10,15 @@ interface ClickEffect {
 }
 
 export default function Cursor() {
+  const cursorRef = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [clickEffects, setClickEffects] = useState<ClickEffect[]>([]);
 
-  const cursorX = useMotionValue(-100);
-  const cursorY = useMotionValue(-100);
-
   useEffect(() => {
     const moveCursor = (e: MouseEvent) => {
-      cursorX.set(e.clientX);
-      cursorY.set(e.clientY);
+      if (cursorRef.current) {
+        cursorRef.current.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
+      }
       setIsVisible(true);
     };
 
@@ -40,16 +39,22 @@ export default function Cursor() {
       setIsVisible(false);
     };
 
+    const handleMouseEnter = () => {
+      setIsVisible(true);
+    };
+
     window.addEventListener("mousemove", moveCursor);
     window.addEventListener("click", handleClick);
-    document.body.addEventListener("mouseleave", handleMouseLeave);
+    document.addEventListener("mouseleave", handleMouseLeave);
+    document.addEventListener("mouseenter", handleMouseEnter);
 
     return () => {
       window.removeEventListener("mousemove", moveCursor);
       window.removeEventListener("click", handleClick);
-      document.body.removeEventListener("mouseleave", handleMouseLeave);
+      document.removeEventListener("mouseleave", handleMouseLeave);
+      document.removeEventListener("mouseenter", handleMouseEnter);
     };
-  }, [cursorX, cursorY]);
+  }, []);
 
   // Hide on touch devices
   if (typeof window !== "undefined" && "ontouchstart" in window) {
@@ -58,13 +63,13 @@ export default function Cursor() {
 
   return (
     <>
-      {/* Arrow cursor with gradient */}
-      <motion.div
+      {/* Arrow cursor with gradient - no animation delay */}
+      <div
+        ref={cursorRef}
         className="fixed top-0 left-0 z-[9999] pointer-events-none"
         style={{
-          x: cursorX,
-          y: cursorY,
           opacity: isVisible ? 1 : 0,
+          willChange: "transform",
         }}
       >
         <svg
@@ -81,7 +86,6 @@ export default function Cursor() {
               <stop offset="100%" stopColor="#06b6d4" />
             </linearGradient>
           </defs>
-          {/* Arrow shape - standard cursor */}
           <path
             d="M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87c.48 0 .72-.58.38-.92L6.35 2.85a.5.5 0 0 0-.85.36Z"
             fill="url(#cursorGradient)"
@@ -92,7 +96,7 @@ export default function Cursor() {
             strokeWidth="1.5"
           />
         </svg>
-      </motion.div>
+      </div>
 
       {/* Click effects */}
       {clickEffects.map((effect) => (
