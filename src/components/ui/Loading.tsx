@@ -12,14 +12,12 @@ export default function Loading({ onComplete }: LoadingProps) {
   const [phase, setPhase] = useState<"loading" | "reveal" | "exit">("loading");
 
   useEffect(() => {
-    // Faster loading progress
     const interval = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
           clearInterval(interval);
           return 100;
         }
-        // Faster increment
         const increment = Math.max(2, (100 - prev) / 5);
         return Math.min(100, prev + increment);
       });
@@ -30,15 +28,30 @@ export default function Loading({ onComplete }: LoadingProps) {
 
   useEffect(() => {
     if (progress >= 100) {
-      // Faster transitions
       setTimeout(() => setPhase("reveal"), 150);
       setTimeout(() => setPhase("exit"), 600);
       setTimeout(() => onComplete(), 900);
     }
   }, [progress, onComplete]);
 
-  // Floating particles - fewer for performance
-  const particles = Array.from({ length: 20 }, (_, i) => ({
+  // Constellation stars (restored)
+  const constellationStars = [
+    { x: 20, y: 25, delay: 0 },
+    { x: 35, y: 15, delay: 0.1 },
+    { x: 50, y: 20, delay: 0.2 },
+    { x: 65, y: 12, delay: 0.3 },
+    { x: 80, y: 22, delay: 0.4 },
+    { x: 25, y: 45, delay: 0.15 },
+    { x: 45, y: 55, delay: 0.25 },
+    { x: 70, y: 48, delay: 0.35 },
+    { x: 15, y: 70, delay: 0.2 },
+    { x: 40, y: 78, delay: 0.3 },
+    { x: 60, y: 72, delay: 0.4 },
+    { x: 85, y: 68, delay: 0.5 },
+  ];
+
+  // Floating particles
+  const particles = Array.from({ length: 30 }, (_, i) => ({
     id: i,
     x: Math.random() * 100,
     y: Math.random() * 100,
@@ -46,6 +59,21 @@ export default function Loading({ onComplete }: LoadingProps) {
     duration: Math.random() * 2 + 1.5,
     delay: Math.random() * 1,
   }));
+
+  // Galaxy spiral arms stars
+  const galaxyStars = Array.from({ length: 60 }, (_, i) => {
+    const angle = (i / 60) * Math.PI * 4; // 2 full rotations
+    const radius = 10 + (i / 60) * 50; // Expanding radius
+    const wobble = Math.sin(i * 0.5) * 5;
+    return {
+      id: i,
+      x: Math.cos(angle) * (radius + wobble),
+      y: Math.sin(angle) * (radius + wobble),
+      size: Math.random() * 2 + 1,
+      opacity: 0.3 + (1 - i / 60) * 0.7,
+      delay: i * 0.02,
+    };
+  });
 
   return (
     <AnimatePresence>
@@ -59,33 +87,35 @@ export default function Loading({ onComplete }: LoadingProps) {
             background: "radial-gradient(ellipse at center, #1a1a2e 0%, #0d0d1a 50%, #050510 100%)",
           }}
         >
-          {/* Ambient gradient orbs */}
+          {/* Animated gradient orbs */}
           <motion.div
-            className="absolute w-[500px] h-[500px] rounded-full opacity-30 blur-[120px]"
+            className="absolute w-[600px] h-[600px] rounded-full opacity-20 blur-[100px]"
             style={{
               background: "radial-gradient(circle, #a855f7 0%, transparent 70%)",
             }}
             animate={{
-              x: [-30, 30, -30],
-              y: [-20, 20, -20],
+              x: [-50, 50, -50],
+              y: [-30, 30, -30],
+              scale: [1, 1.2, 1],
             }}
             transition={{
-              duration: 4,
+              duration: 8,
               repeat: Infinity,
               ease: "easeInOut",
             }}
           />
           <motion.div
-            className="absolute w-[400px] h-[400px] rounded-full opacity-30 blur-[120px]"
+            className="absolute w-[500px] h-[500px] rounded-full opacity-20 blur-[100px]"
             style={{
               background: "radial-gradient(circle, #06b6d4 0%, transparent 70%)",
             }}
             animate={{
-              x: [30, -30, 30],
-              y: [20, -20, 20],
+              x: [50, -50, 50],
+              y: [30, -30, 30],
+              scale: [1.2, 1, 1.2],
             }}
             transition={{
-              duration: 4,
+              duration: 8,
               repeat: Infinity,
               ease: "easeInOut",
             }}
@@ -104,8 +134,8 @@ export default function Loading({ onComplete }: LoadingProps) {
               }}
               initial={{ opacity: 0 }}
               animate={{
-                opacity: [0, 0.5, 0],
-                y: [0, -15, 0],
+                opacity: [0, 0.6, 0],
+                y: [0, -20, 0],
               }}
               transition={{
                 duration: particle.duration,
@@ -116,109 +146,117 @@ export default function Loading({ onComplete }: LoadingProps) {
             />
           ))}
 
+          {/* Constellation stars */}
+          {constellationStars.map((star, i) => (
+            <motion.div
+              key={i}
+              className="absolute"
+              style={{
+                left: `${star.x}%`,
+                top: `${star.y}%`,
+              }}
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{
+                opacity: phase === "loading" ? [0, 1, 0.5, 1] : 1,
+                scale: 1,
+              }}
+              transition={{
+                duration: 0.8,
+                delay: star.delay,
+                opacity: {
+                  duration: 2,
+                  repeat: phase === "loading" ? Infinity : 0,
+                  ease: "easeInOut",
+                },
+              }}
+            >
+              <div
+                className="w-2 h-2 rounded-full bg-white"
+                style={{
+                  boxShadow: "0 0 10px 2px rgba(255, 255, 255, 0.5), 0 0 20px 4px rgba(168, 85, 247, 0.3)",
+                }}
+              />
+            </motion.div>
+          ))}
+
           {/* Center content */}
           <div className="relative z-10 flex flex-col items-center">
-            {/* Planet animation */}
+            {/* Galaxy spiral animation */}
             <motion.div
-              className="relative mb-8"
-              initial={{ scale: 0.8, opacity: 0 }}
+              className="relative mb-8 w-32 h-32"
+              initial={{ scale: 0.8, opacity: 0, rotate: -90 }}
               animate={{
-                scale: phase === "reveal" ? [1, 1.1, 0] : 1,
+                scale: phase === "reveal" ? [1, 1.2, 0] : 1,
                 opacity: phase === "reveal" ? [1, 1, 0] : 1,
+                rotate: 0,
               }}
               transition={{
                 scale: { duration: 0.4, ease: [0.4, 0, 0.2, 1] },
                 opacity: { duration: 0.4, ease: "easeOut" },
+                rotate: { duration: 0.8, ease: "easeOut" },
               }}
             >
-              {/* Planet ring (Saturn-like) */}
+              {/* Galaxy core glow */}
               <motion.div
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-44 h-10"
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full"
                 style={{
-                  background: "linear-gradient(90deg, transparent 0%, rgba(168, 85, 247, 0.3) 20%, rgba(6, 182, 212, 0.4) 50%, rgba(168, 85, 247, 0.3) 80%, transparent 100%)",
-                  borderRadius: "50%",
-                  transform: "translateX(-50%) translateY(-50%) rotateX(75deg)",
+                  background: "radial-gradient(circle, #fff 0%, #a855f7 30%, #06b6d4 60%, transparent 100%)",
+                  boxShadow: "0 0 30px 10px rgba(168, 85, 247, 0.5), 0 0 60px 20px rgba(6, 182, 212, 0.3)",
                 }}
-                animate={{ rotate: 360 }}
+                animate={{
+                  scale: [1, 1.2, 1],
+                }}
                 transition={{
-                  duration: 8,
+                  duration: 1.5,
                   repeat: Infinity,
-                  ease: "linear",
+                  ease: "easeInOut",
                 }}
               />
 
-              {/* Planet body */}
+              {/* Rotating galaxy spiral */}
               <motion.div
-                className="relative w-28 h-28 rounded-full overflow-hidden"
-                style={{
-                  background: "linear-gradient(135deg, #7c3aed 0%, #a855f7 25%, #06b6d4 75%, #0891b2 100%)",
-                  boxShadow: "0 0 60px 15px rgba(168, 85, 247, 0.3), 0 0 100px 30px rgba(6, 182, 212, 0.15), inset -20px -20px 40px rgba(0, 0, 0, 0.4)",
-                }}
-                animate={{
-                  rotate: [0, 360],
-                }}
+                className="absolute inset-0"
+                animate={{ rotate: 360 }}
                 transition={{
-                  duration: 20,
+                  duration: 10,
                   repeat: Infinity,
                   ease: "linear",
                 }}
               >
-                {/* Planet surface texture */}
-                <div
-                  className="absolute inset-0 opacity-30"
-                  style={{
-                    background: `
-                      radial-gradient(circle at 30% 30%, rgba(255,255,255,0.3) 0%, transparent 50%),
-                      radial-gradient(circle at 70% 60%, rgba(6, 182, 212, 0.4) 0%, transparent 40%),
-                      radial-gradient(circle at 40% 70%, rgba(168, 85, 247, 0.3) 0%, transparent 30%)
-                    `,
-                  }}
-                />
-
-                {/* Surface bands */}
-                <div className="absolute inset-0 opacity-20">
-                  <div className="absolute top-[20%] left-0 right-0 h-[2px] bg-white/30 blur-[1px]" />
-                  <div className="absolute top-[40%] left-0 right-0 h-[3px] bg-cyan-400/40 blur-[2px]" />
-                  <div className="absolute top-[60%] left-0 right-0 h-[2px] bg-purple-400/30 blur-[1px]" />
-                  <div className="absolute top-[80%] left-0 right-0 h-[1px] bg-white/20" />
-                </div>
-
-                {/* Shine highlight */}
-                <div
-                  className="absolute top-3 left-4 w-8 h-8 rounded-full bg-white opacity-30 blur-md"
-                />
-                <div
-                  className="absolute top-4 left-5 w-3 h-3 rounded-full bg-white opacity-60 blur-sm"
-                />
+                {galaxyStars.map((star) => (
+                  <motion.div
+                    key={star.id}
+                    className="absolute rounded-full"
+                    style={{
+                      left: "50%",
+                      top: "50%",
+                      width: star.size,
+                      height: star.size,
+                      marginLeft: star.x,
+                      marginTop: star.y,
+                      background: star.id % 3 === 0 ? "#a855f7" : star.id % 3 === 1 ? "#06b6d4" : "#fff",
+                      opacity: star.opacity,
+                      boxShadow: `0 0 ${star.size * 2}px ${star.id % 3 === 0 ? "#a855f7" : star.id % 3 === 1 ? "#06b6d4" : "#fff"}`,
+                    }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: star.opacity }}
+                    transition={{ delay: star.delay, duration: 0.3 }}
+                  />
+                ))}
               </motion.div>
 
-              {/* Atmosphere glow */}
-              <div
-                className="absolute inset-0 rounded-full pointer-events-none"
-                style={{
-                  background: "radial-gradient(circle, transparent 45%, rgba(6, 182, 212, 0.2) 50%, rgba(168, 85, 247, 0.15) 55%, transparent 60%)",
-                  transform: "scale(1.15)",
-                }}
-              />
-
-              {/* Orbiting moon */}
+              {/* Outer glow ring */}
               <motion.div
-                className="absolute w-3 h-3 rounded-full"
+                className="absolute inset-0 rounded-full"
                 style={{
-                  background: "radial-gradient(circle at 30% 30%, #e0e7ff 0%, #a5b4fc 50%, #6366f1 100%)",
-                  boxShadow: "0 0 10px rgba(165, 180, 252, 0.5)",
-                  top: "50%",
-                  left: "50%",
-                  marginTop: -6,
-                  marginLeft: -6,
+                  background: "radial-gradient(circle, transparent 30%, rgba(168, 85, 247, 0.1) 50%, rgba(6, 182, 212, 0.1) 70%, transparent 100%)",
                 }}
                 animate={{
-                  x: [70, -70, 70],
-                  y: [0, 0, 0],
-                  scale: [1, 0.8, 1],
+                  scale: [1, 1.1, 1],
+                  opacity: [0.5, 0.8, 0.5],
                 }}
                 transition={{
-                  duration: 3,
+                  duration: 2,
                   repeat: Infinity,
                   ease: "easeInOut",
                 }}
@@ -289,6 +327,17 @@ export default function Loading({ onComplete }: LoadingProps) {
               {Math.round(progress)}%
             </motion.span>
           </div>
+
+          {/* Bottom gradient line */}
+          <motion.div
+            className="absolute bottom-0 left-0 right-0 h-px"
+            style={{
+              background: "linear-gradient(90deg, transparent, #a855f7, #06b6d4, transparent)",
+            }}
+            initial={{ scaleX: 0, opacity: 0 }}
+            animate={{ scaleX: 1, opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+          />
         </motion.div>
       )}
     </AnimatePresence>
