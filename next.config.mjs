@@ -21,22 +21,6 @@ const nextConfig = {
   // Three.js support
   transpilePackages: ["three"],
 
-  // Enable bundle analyzer
-  webpack: (config, { isServer }) => {
-    if (process.env.ANALYZE === 'true') {
-      const { BundleAnalyzerPlugin } = require('@next/bundle-analyzer');
-      config.plugins.push(
-        new BundleAnalyzerPlugin({
-          enabled: process.env.ANALYZE === 'true',
-          openAnalyzer: false,
-          analyzerMode: 'static',
-          reportFilename: `bundles-report-${isServer ? 'server' : 'client'}.html`,
-        })
-      );
-    }
-    return config;
-  },
-
   // Environment variables
   env: {
     NEXT_PUBLIC_APP_VERSION: process.env.npm_package_version || '0.0.0',
