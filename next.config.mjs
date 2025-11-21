@@ -1,15 +1,18 @@
 /** @type {import('next').NextConfig} */
 
 const nextConfig = {
+  // Enable static export for Netlify
+  output: 'export',
+
   // Enable SWC minification
   swcMinify: true,
 
   // Enable React strict mode for development
   reactStrictMode: true,
 
-  // Image optimization
+  // Image optimization - disable for static export
   images: {
-    unoptimized: false,
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "https",
@@ -77,19 +80,6 @@ const nextConfig = {
     ];
   },
 
-  // Redirects
-  async redirects() {
-    return [];
-  },
-
-  // Rewrites
-  async rewrites() {
-    return {
-      beforeFiles: [],
-      afterFiles: [],
-      fallback: [],
-    };
-  },
 };
 
 export default nextConfig;

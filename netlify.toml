@@ -2,16 +2,17 @@
 
 [build]
 command = "npm run build"
-publish = ".next"
+# Publish the out directory (static export)
+publish = "out"
 
 [functions]
 node_bundler = "esbuild"
 
-# Redirect for Next.js App Router
+# Handle SPA routing for Next.js
 [[redirects]]
 from = "/*"
-to = "/404"
-status = 404
+to = "/index.html"
+status = 200
 
 [dev]
 command = "npm run dev"
