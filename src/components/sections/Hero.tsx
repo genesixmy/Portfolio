@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import dynamic from "next/dynamic";
 
@@ -35,6 +35,53 @@ const socialLinks = [
     ),
   },
 ];
+
+const roles = [
+  "Web Developer",
+  "UI/UX Enthusiast",
+  "Problem Solver",
+  "Creative Coder",
+];
+
+function TypewriterText() {
+  const [currentRoleIndex, setCurrentRoleIndex] = useState(0);
+  const [currentText, setCurrentText] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  useEffect(() => {
+    const currentRole = roles[currentRoleIndex];
+
+    const timeout = setTimeout(() => {
+      if (!isDeleting) {
+        if (currentText.length < currentRole.length) {
+          setCurrentText(currentRole.slice(0, currentText.length + 1));
+        } else {
+          setTimeout(() => setIsDeleting(true), 2000);
+        }
+      } else {
+        if (currentText.length > 0) {
+          setCurrentText(currentText.slice(0, -1));
+        } else {
+          setIsDeleting(false);
+          setCurrentRoleIndex((prev) => (prev + 1) % roles.length);
+        }
+      }
+    }, isDeleting ? 50 : 100);
+
+    return () => clearTimeout(timeout);
+  }, [currentText, isDeleting, currentRoleIndex]);
+
+  return (
+    <span className="text-primary-400">
+      {currentText}
+      <motion.span
+        animate={{ opacity: [1, 0] }}
+        transition={{ duration: 0.5, repeat: Infinity, repeatType: "reverse" }}
+        className="inline-block w-[3px] h-[1em] bg-primary-400 ml-1 align-middle"
+      />
+    </span>
+  );
+}
 
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -77,23 +124,53 @@ export default function Hero() {
             <span className="text-sm text-dark-300">Sedia untuk projek baru</span>
           </motion.div>
 
-          {/* Heading */}
-          <motion.h1
+          {/* Heading with Typing Animation */}
+          <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.1 }}
-            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-display font-bold leading-tight mb-6"
+            className="mb-4"
           >
-            <span className="text-white">Hai, saya</span>
-            <br />
-            <span className="gradient-text">Khalid</span>
-          </motion.h1>
+            <motion.span
+              className="text-2xl md:text-3xl text-dark-400 block mb-2"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
+              Hai, saya
+            </motion.span>
+            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-display font-bold leading-tight">
+              <motion.span
+                className="gradient-text inline-block"
+                initial={{ scale: 0.5, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                transition={{
+                  duration: 0.8,
+                  delay: 0.3,
+                  type: "spring",
+                  stiffness: 100
+                }}
+              >
+                Khalid
+              </motion.span>
+            </h1>
+          </motion.div>
+
+          {/* Typewriter Role */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            className="text-xl md:text-2xl font-medium mb-6 h-8"
+          >
+            <TypewriterText />
+          </motion.div>
 
           {/* Subtitle */}
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
             className="text-lg md:text-xl text-dark-400 max-w-2xl mx-auto mb-10"
           >
             Saya membangunkan projek web yang fokus pada kegunaan sebenar,
@@ -104,7 +181,7 @@ export default function Hero() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
+            transition={{ duration: 0.6, delay: 0.7 }}
             className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12"
           >
             <motion.a
@@ -144,7 +221,7 @@ export default function Hero() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.4 }}
+            transition={{ duration: 0.6, delay: 0.8 }}
             className="flex items-center justify-center gap-4"
           >
             {socialLinks.map((social, index) => (
@@ -158,7 +235,7 @@ export default function Hero() {
                 whileTap={{ scale: 0.95 }}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.5 + index * 0.1 }}
+                transition={{ duration: 0.4, delay: 0.9 + index * 0.1 }}
                 aria-label={social.name}
               >
                 {social.icon}
@@ -172,7 +249,7 @@ export default function Hero() {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 1 }}
+        transition={{ duration: 1, delay: 1.2 }}
         className="absolute bottom-8 left-1/2 -translate-x-1/2"
       >
         <motion.div
