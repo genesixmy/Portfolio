@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 
 interface ClickEffect {
@@ -9,19 +9,15 @@ interface ClickEffect {
   y: number;
 }
 
+// SVG cursor as data URL - gradient arrow
+const cursorSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><defs><linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="%23a855f7"/><stop offset="100%" stop-color="%2306b6d4"/></linearGradient></defs><path d="M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87c.48 0 .72-.58.38-.92L6.35 2.85a.5.5 0 0 0-.85.36Z" fill="url(%23g)"/><path d="M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87c.48 0 .72-.58.38-.92L6.35 2.85a.5.5 0 0 0-.85.36Z" stroke="white" stroke-width="1.5"/></svg>`;
+
+const cursorUrl = `data:image/svg+xml,${encodeURIComponent(cursorSvg)}`;
+
 export default function Cursor() {
-  const cursorRef = useRef<HTMLDivElement>(null);
-  const [isVisible, setIsVisible] = useState(false);
   const [clickEffects, setClickEffects] = useState<ClickEffect[]>([]);
 
   useEffect(() => {
-    const moveCursor = (e: MouseEvent) => {
-      if (cursorRef.current) {
-        cursorRef.current.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
-      }
-      setIsVisible(true);
-    };
-
     const handleClick = (e: MouseEvent) => {
       const newEffect: ClickEffect = {
         id: Date.now(),
@@ -35,70 +31,13 @@ export default function Cursor() {
       }, 600);
     };
 
-    const handleMouseLeave = () => {
-      setIsVisible(false);
-    };
-
-    const handleMouseEnter = () => {
-      setIsVisible(true);
-    };
-
-    window.addEventListener("mousemove", moveCursor);
     window.addEventListener("click", handleClick);
-    document.addEventListener("mouseleave", handleMouseLeave);
-    document.addEventListener("mouseenter", handleMouseEnter);
-
-    return () => {
-      window.removeEventListener("mousemove", moveCursor);
-      window.removeEventListener("click", handleClick);
-      document.removeEventListener("mouseleave", handleMouseLeave);
-      document.removeEventListener("mouseenter", handleMouseEnter);
-    };
+    return () => window.removeEventListener("click", handleClick);
   }, []);
-
-  // Hide on touch devices
-  if (typeof window !== "undefined" && "ontouchstart" in window) {
-    return null;
-  }
 
   return (
     <>
-      {/* Arrow cursor with gradient - no animation delay */}
-      <div
-        ref={cursorRef}
-        className="fixed top-0 left-0 z-[9999] pointer-events-none"
-        style={{
-          opacity: isVisible ? 1 : 0,
-          willChange: "transform",
-        }}
-      >
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.3))" }}
-        >
-          <defs>
-            <linearGradient id="cursorGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#a855f7" />
-              <stop offset="100%" stopColor="#06b6d4" />
-            </linearGradient>
-          </defs>
-          <path
-            d="M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87c.48 0 .72-.58.38-.92L6.35 2.85a.5.5 0 0 0-.85.36Z"
-            fill="url(#cursorGradient)"
-          />
-          <path
-            d="M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87c.48 0 .72-.58.38-.92L6.35 2.85a.5.5 0 0 0-.85.36Z"
-            stroke="white"
-            strokeWidth="1.5"
-          />
-        </svg>
-      </div>
-
-      {/* Click effects */}
+      {/* Click effects only - cursor handled by CSS */}
       {clickEffects.map((effect) => (
         <motion.div
           key={effect.id}
@@ -137,10 +76,10 @@ export default function Cursor() {
         </motion.div>
       ))}
 
-      {/* Hide default cursor */}
+      {/* Custom cursor via CSS - no delay */}
       <style jsx global>{`
-        * {
-          cursor: none !important;
+        *, *::before, *::after {
+          cursor: url('${cursorUrl}') 5 3, auto !important;
         }
       `}</style>
     </>
