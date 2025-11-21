@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { motion, useMotionValue } from "framer-motion";
 
 interface ClickEffect {
   id: number;
@@ -10,35 +10,17 @@ interface ClickEffect {
 }
 
 export default function Cursor() {
-  const [isPointer, setIsPointer] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [clickEffects, setClickEffects] = useState<ClickEffect[]>([]);
 
   const cursorX = useMotionValue(-100);
   const cursorY = useMotionValue(-100);
 
-  const springConfig = { damping: 25, stiffness: 300 };
-  const cursorXSpring = useSpring(cursorX, springConfig);
-  const cursorYSpring = useSpring(cursorY, springConfig);
-
   useEffect(() => {
     const moveCursor = (e: MouseEvent) => {
       cursorX.set(e.clientX);
       cursorY.set(e.clientY);
       setIsVisible(true);
-    };
-
-    const handleMouseOver = (e: MouseEvent) => {
-      const target = e.target as HTMLElement;
-      const isClickable = Boolean(
-        target.tagName === "A" ||
-        target.tagName === "BUTTON" ||
-        target.closest("a") ||
-        target.closest("button") ||
-        target.style.cursor === "pointer" ||
-        window.getComputedStyle(target).cursor === "pointer"
-      );
-      setIsPointer(isClickable);
     };
 
     const handleClick = (e: MouseEvent) => {
@@ -49,7 +31,6 @@ export default function Cursor() {
       };
       setClickEffects((prev) => [...prev, newEffect]);
 
-      // Remove effect after animation
       setTimeout(() => {
         setClickEffects((prev) => prev.filter((effect) => effect.id !== newEffect.id));
       }, 600);
@@ -60,13 +41,11 @@ export default function Cursor() {
     };
 
     window.addEventListener("mousemove", moveCursor);
-    window.addEventListener("mouseover", handleMouseOver);
     window.addEventListener("click", handleClick);
     document.body.addEventListener("mouseleave", handleMouseLeave);
 
     return () => {
       window.removeEventListener("mousemove", moveCursor);
-      window.removeEventListener("mouseover", handleMouseOver);
       window.removeEventListener("click", handleClick);
       document.body.removeEventListener("mouseleave", handleMouseLeave);
     };
@@ -79,45 +58,40 @@ export default function Cursor() {
 
   return (
     <>
-      {/* Main cursor dot */}
+      {/* Arrow cursor with gradient */}
       <motion.div
-        className="fixed top-0 left-0 z-[9999] pointer-events-none mix-blend-difference"
+        className="fixed top-0 left-0 z-[9999] pointer-events-none"
         style={{
-          x: cursorXSpring,
-          y: cursorYSpring,
+          x: cursorX,
+          y: cursorY,
+          opacity: isVisible ? 1 : 0,
         }}
       >
-        <motion.div
-          className="relative -translate-x-1/2 -translate-y-1/2"
-          animate={{
-            scale: isPointer ? 1.5 : 1,
-            opacity: isVisible ? 1 : 0,
-          }}
-          transition={{ duration: 0.15 }}
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+          style={{ filter: "drop-shadow(0 2px 4px rgba(0,0,0,0.3))" }}
         >
-          {/* Inner dot */}
-          <div className="w-3 h-3 rounded-full bg-gradient-to-r from-primary-400 to-accent-400" />
-        </motion.div>
-      </motion.div>
-
-      {/* Cursor ring */}
-      <motion.div
-        className="fixed top-0 left-0 z-[9998] pointer-events-none"
-        style={{
-          x: cursorXSpring,
-          y: cursorYSpring,
-        }}
-      >
-        <motion.div
-          className="relative -translate-x-1/2 -translate-y-1/2"
-          animate={{
-            scale: isPointer ? 1.8 : 1,
-            opacity: isVisible ? 1 : 0,
-          }}
-          transition={{ duration: 0.2 }}
-        >
-          <div className="w-8 h-8 rounded-full border-2 border-primary-400/50" />
-        </motion.div>
+          <defs>
+            <linearGradient id="cursorGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stopColor="#a855f7" />
+              <stop offset="100%" stopColor="#06b6d4" />
+            </linearGradient>
+          </defs>
+          {/* Arrow shape - standard cursor */}
+          <path
+            d="M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87c.48 0 .72-.58.38-.92L6.35 2.85a.5.5 0 0 0-.85.36Z"
+            fill="url(#cursorGradient)"
+          />
+          <path
+            d="M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 0 1 .35-.15h6.87c.48 0 .72-.58.38-.92L6.35 2.85a.5.5 0 0 0-.85.36Z"
+            stroke="white"
+            strokeWidth="1.5"
+          />
+        </svg>
       </motion.div>
 
       {/* Click effects */}
@@ -159,7 +133,7 @@ export default function Cursor() {
         </motion.div>
       ))}
 
-      {/* Hide default cursor via style */}
+      {/* Hide default cursor */}
       <style jsx global>{`
         * {
           cursor: none !important;
