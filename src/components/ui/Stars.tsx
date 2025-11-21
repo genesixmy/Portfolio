@@ -76,34 +76,43 @@ export default function Stars() {
 function ShootingStar({ delay = 0 }: { delay?: number }) {
   return (
     <motion.div
-      className="absolute w-1 h-1 bg-white rounded-full"
+      className="absolute"
       style={{
-        boxShadow: "0 0 6px 2px rgba(255, 255, 255, 0.6)",
+        width: "2px",
+        height: "2px",
       }}
       initial={{
-        top: "10%",
-        left: "80%",
+        top: "5%",
+        left: "70%",
         opacity: 0,
-        scale: 0
       }}
       animate={{
-        top: ["10%", "60%"],
-        left: ["80%", "20%"],
+        top: ["5%", "70%"],
+        left: ["70%", "20%"],
         opacity: [0, 1, 1, 0],
-        scale: [0, 1, 1, 0],
       }}
       transition={{
-        duration: 1.5,
+        duration: 1.2,
         delay: delay,
         repeat: Infinity,
-        repeatDelay: 10 + Math.random() * 10,
-        ease: "easeOut",
+        repeatDelay: 8 + Math.random() * 12,
+        ease: "easeIn",
       }}
     >
-      {/* Trail */}
+      {/* Star head */}
       <div
-        className="absolute top-0 left-0 w-20 h-[1px] bg-gradient-to-r from-white/80 to-transparent origin-left"
-        style={{ transform: "rotate(45deg) translateX(4px)" }}
+        className="absolute w-1 h-1 bg-white rounded-full"
+        style={{
+          boxShadow: "0 0 6px 2px rgba(255, 255, 255, 0.8)",
+        }}
+      />
+      {/* Trail - pointing behind (up-right) as star falls down-left */}
+      <div
+        className="absolute top-0 left-0 w-16 h-[2px] origin-left"
+        style={{
+          transform: "rotate(-52deg)",
+          background: "linear-gradient(to right, rgba(255,255,255,0.8), transparent)",
+        }}
       />
     </motion.div>
   );
