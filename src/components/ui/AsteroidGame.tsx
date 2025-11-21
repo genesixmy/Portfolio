@@ -315,16 +315,15 @@ export default function AsteroidGame() {
               <circle cx="26" cy="28" r="2" fill="#22d3ee" opacity="0.6" />
             </svg>
 
-            {/* Engine flames */}
+            {/* Engine flame */}
             <motion.div
-              className="absolute -bottom-3 left-1/2 -translate-x-1/2 flex gap-1"
-              animate={{ scaleY: [1, 1.4, 1], opacity: [0.8, 1, 0.8] }}
-              transition={{ duration: 0.15, repeat: Infinity }}
-            >
-              <div className="w-2 h-4 rounded-full" style={{ background: "linear-gradient(180deg, #22d3ee 0%, #a855f7 40%, #f59e0b 70%, transparent 100%)" }} />
-              <div className="w-3 h-5 rounded-full" style={{ background: "linear-gradient(180deg, #67e8f9 0%, #06b6d4 30%, #f59e0b 60%, #ef4444 80%, transparent 100%)" }} />
-              <div className="w-2 h-4 rounded-full" style={{ background: "linear-gradient(180deg, #22d3ee 0%, #a855f7 40%, #f59e0b 70%, transparent 100%)" }} />
-            </motion.div>
+              className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-4 h-6 rounded-full"
+              style={{
+                background: "linear-gradient(180deg, #67e8f9 0%, #06b6d4 25%, #a855f7 50%, #f59e0b 75%, transparent 100%)",
+              }}
+              animate={{ scaleY: [1, 1.5, 1], opacity: [0.9, 1, 0.9] }}
+              transition={{ duration: 0.12, repeat: Infinity }}
+            />
           </motion.div>
         )}
 
