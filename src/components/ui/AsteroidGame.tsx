@@ -317,12 +317,16 @@ export default function AsteroidGame() {
 
             {/* Engine flame */}
             <motion.div
-              className="absolute -bottom-4 left-1/2 -translate-x-1/2 w-4 h-6 rounded-full"
+              className="absolute w-3 h-8"
               style={{
-                background: "linear-gradient(180deg, #67e8f9 0%, #06b6d4 25%, #a855f7 50%, #f59e0b 75%, transparent 100%)",
+                bottom: -12,
+                left: "50%",
+                marginLeft: -6,
+                background: "linear-gradient(180deg, #67e8f9 0%, #06b6d4 20%, #a855f7 45%, #f59e0b 70%, transparent 100%)",
+                borderRadius: "50%",
               }}
-              animate={{ scaleY: [1, 1.5, 1], opacity: [0.9, 1, 0.9] }}
-              transition={{ duration: 0.12, repeat: Infinity }}
+              animate={{ scaleY: [1, 1.4, 1], opacity: [0.85, 1, 0.85] }}
+              transition={{ duration: 0.1, repeat: Infinity }}
             />
           </motion.div>
         )}
