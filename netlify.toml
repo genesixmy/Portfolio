@@ -1,0 +1,18 @@
+# Netlify Configuration for Next.js 14 Portfolio
+
+[build]
+command = "npm run build"
+publish = ".next"
+
+[functions]
+node_bundler = "esbuild"
+
+# Redirect for Next.js App Router
+[[redirects]]
+from = "/*"
+to = "/404"
+status = 404
+
+[dev]
+command = "npm run dev"
+port = 3000
