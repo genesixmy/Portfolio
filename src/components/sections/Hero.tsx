@@ -151,7 +151,7 @@ export default function Hero() {
                   stiffness: 100
                 }}
               >
-                Khalid
+                Khalid Zainal
               </motion.span>
             </h1>
           </motion.div>

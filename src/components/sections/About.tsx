@@ -320,7 +320,7 @@ export default function About() {
               className="glass-card"
             >
               <h3 className="text-2xl font-display font-bold text-white mb-4">
-                Salam, saya Khalid
+                Salam, saya Khalid Zainal
               </h3>
               <p className="text-dark-400 leading-relaxed mb-4">
                 Saya seorang web developer dari Malaysia yang passionate dalam membangunkan

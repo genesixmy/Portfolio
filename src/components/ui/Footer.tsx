@@ -45,7 +45,7 @@ export default function Footer() {
               className="inline-block text-3xl font-display font-bold mb-4"
               whileHover={{ scale: 1.02 }}
             >
-              <span className="text-gradient">Khalid</span>
+              <span className="text-gradient">Khalid Zainal</span>
               <span className="text-white">.</span>
             </motion.a>
             <p className="text-dark-400 max-w-sm mb-6">
@@ -107,7 +107,7 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-dark-500">
-            &copy; {currentYear} Khalid. All rights reserved.
+            &copy; {currentYear} Khalid Zainal. All rights reserved.
           </p>
           <p className="text-sm text-dark-500">
             Built with Next.js, Tailwind CSS & Framer Motion

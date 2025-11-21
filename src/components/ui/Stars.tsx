@@ -83,12 +83,12 @@ function ShootingStar({ delay = 0 }: { delay?: number }) {
       }}
       initial={{
         top: "5%",
-        left: "70%",
+        left: "75%",
         opacity: 0,
       }}
       animate={{
-        top: ["5%", "70%"],
-        left: ["70%", "20%"],
+        top: ["5%", "55%"],
+        left: ["75%", "25%"],
         opacity: [0, 1, 1, 0],
       }}
       transition={{
@@ -106,11 +106,11 @@ function ShootingStar({ delay = 0 }: { delay?: number }) {
           boxShadow: "0 0 6px 2px rgba(255, 255, 255, 0.8)",
         }}
       />
-      {/* Trail - pointing behind (up-right) as star falls down-left */}
+      {/* Trail - pointing behind (up-right) as star falls down-left at 45deg */}
       <div
         className="absolute top-0 left-0 w-16 h-[2px] origin-left"
         style={{
-          transform: "rotate(-52deg)",
+          transform: "rotate(-45deg)",
           background: "linear-gradient(to right, rgba(255,255,255,0.8), transparent)",
         }}
       />

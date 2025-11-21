@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Khalid | Web Developer Malaysia",
+  title: "Khalid Zainal | Web Developer Malaysia",
   description:
-    "Saya Khalid, web developer dari Malaysia yang membangunkan projek web yang fokus pada kegunaan sebenar, fungsi praktikal, dan pengalaman pengguna yang ringkas tetapi berkesan.",
+    "Saya Khalid Zainal, web developer dari Malaysia yang membangunkan projek web yang fokus pada kegunaan sebenar, fungsi praktikal, dan pengalaman pengguna yang ringkas tetapi berkesan.",
   keywords: [
     "web developer",
     "malaysia",
@@ -14,9 +14,9 @@ export const metadata: Metadata = {
     "frontend developer",
     "khalid",
   ],
-  authors: [{ name: "Khalid" }],
+  authors: [{ name: "Khalid Zainal" }],
   openGraph: {
-    title: "Khalid | Web Developer Malaysia",
+    title: "Khalid Zainal | Web Developer Malaysia",
     description: "Membangunkan projek web yang praktikal dan mesra pengguna",
     type: "website",
   },

@@ -241,7 +241,7 @@ export default function Work() {
               &ldquo;Setiap projek adalah peluang untuk belajar sesuatu yang baru dan mencipta sesuatu yang bermakna.&rdquo;
             </blockquote>
             <cite className="not-italic">
-              <span className="block text-white font-semibold">Khalid</span>
+              <span className="block text-white font-semibold">Khalid Zainal</span>
               <span className="text-dark-500 text-sm">Web Developer</span>
             </cite>
           </div>

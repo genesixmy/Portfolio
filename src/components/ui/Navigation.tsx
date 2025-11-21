@@ -61,7 +61,7 @@ export default function Navigation() {
               whileTap={{ scale: 0.95 }}
             >
               <span className="text-2xl font-display font-bold">
-                <span className="text-gradient">Khalid</span>
+                <span className="text-gradient">Khalid Zainal</span>
                 <span className="text-white">.</span>
               </span>
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primary-500 to-accent-500 group-hover:w-full transition-all duration-300" />
