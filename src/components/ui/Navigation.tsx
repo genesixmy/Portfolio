@@ -6,10 +6,10 @@ import { cn } from "@/lib/utils";
 
 const navLinks = [
   { href: "#home", label: "Home" },
-  { href: "#about", label: "About" },
-  { href: "#skills", label: "Skills" },
-  { href: "#work", label: "Work" },
-  { href: "#contact", label: "Contact" },
+  { href: "#about", label: "Tentang" },
+  { href: "#skills", label: "Servis" },
+  { href: "#work", label: "Projek" },
+  { href: "#contact", label: "Hubungi" },
 ];
 
 export default function Navigation() {
@@ -62,7 +62,7 @@ export default function Navigation() {
               whileTap={{ scale: 0.95 }}
             >
               <span className="text-2xl font-display font-bold">
-                <span className="text-gradient">Alex</span>
+                <span className="text-gradient">Khalid</span>
                 <span className="text-white">.</span>
               </span>
               <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-primary-500 to-accent-500 group-hover:w-full transition-all duration-300" />
@@ -102,7 +102,7 @@ export default function Navigation() {
               whileHover={{ scale: 1.05, y: -2 }}
               whileTap={{ scale: 0.95 }}
             >
-              Let&apos;s Talk
+              Hubungi
               <svg
                 className="w-4 h-4"
                 fill="none"
@@ -201,7 +201,7 @@ export default function Navigation() {
                 className="mt-8 flex items-center justify-center gap-2 w-full px-5 py-3 bg-gradient-to-r from-primary-600 to-primary-500 rounded-lg font-semibold text-white"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
-                Let&apos;s Talk
+                Hubungi
               </motion.a>
             </motion.nav>
           </motion.div>

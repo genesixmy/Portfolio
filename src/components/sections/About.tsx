@@ -1,46 +1,46 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
+import { motion, useInView } from "framer-motion";
 
-const stats = [
-  { number: "8+", label: "Years Experience" },
-  { number: "150+", label: "Projects Completed" },
-  { number: "50+", label: "Happy Clients" },
-  { number: "15+", label: "Awards Won" },
+const funFacts = [
+  { emoji: "☕", text: "Kopi sebelum code" },
+  { emoji: "🎮", text: "Gamer sejati" },
+  { emoji: "🌙", text: "Night owl developer" },
+  { emoji: "🚀", text: "Ship fast, iterate faster" },
 ];
 
-const experiences = [
-  {
-    year: "2023 - Present",
-    role: "Lead Creative Developer",
-    company: "Nexus Digital Studio",
-    description: "Leading a team of developers to create immersive web experiences for Fortune 500 clients.",
-  },
-  {
-    year: "2020 - 2023",
-    role: "Senior Frontend Developer",
-    company: "Creative Minds Agency",
-    description: "Developed award-winning interactive websites and web applications using cutting-edge technologies.",
-  },
-  {
-    year: "2018 - 2020",
-    role: "UI/UX Designer & Developer",
-    company: "Digital Dreams Inc.",
-    description: "Designed and developed responsive websites and mobile applications for diverse clientele.",
-  },
+const techStack = [
+  "Next.js", "React", "TypeScript", "Tailwind CSS",
+  "Node.js", "PostgreSQL", "Prisma", "Vercel"
+];
+
+// Random coding quotes
+const quotes = [
+  "Code is like humor. When you have to explain it, it's bad.",
+  "First, solve the problem. Then, write the code.",
+  "Any fool can write code that a computer can understand. Good programmers write code that humans can understand.",
+  "The best error message is the one that never shows up.",
 ];
 
 export default function About() {
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
+  const [currentQuote, setCurrentQuote] = useState(0);
+  const [coffeeCount, setCoffeeCount] = useState(0);
 
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start end", "end start"],
-  });
+  // Rotate quotes
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentQuote((prev) => (prev + 1) % quotes.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
-  const y = useTransform(scrollYProgress, [0, 1], [100, -100]);
+  // Fun coffee counter
+  const addCoffee = () => {
+    setCoffeeCount((prev) => prev + 1);
+  };
 
   return (
     <section id="about" ref={containerRef} className="section-padding relative overflow-hidden">
@@ -58,106 +58,91 @@ export default function About() {
           className="text-center mb-16"
         >
           <span className="inline-block px-4 py-1.5 mb-4 text-sm font-medium text-primary-400 bg-primary-500/10 border border-primary-500/20 rounded-full">
-            About Me
+            Tentang Saya
           </span>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-6">
-            Crafting Digital
-            <span className="text-gradient"> Excellence</span>
+            Siapa
+            <span className="text-gradient"> Khalid?</span>
           </h2>
-          <p className="text-lg text-dark-400 max-w-2xl mx-auto">
-            With over 8 years of experience in web development and design, I transform complex ideas into elegant, user-centric digital solutions.
-          </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-          {/* Left Column - Image & Stats */}
-          <motion.div style={{ y }} className="relative">
-            {/* Main Image */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={isInView ? { opacity: 1, scale: 1 } : {}}
-              transition={{ duration: 0.8 }}
-              className="relative aspect-square max-w-md mx-auto"
-            >
-              {/* Decorative Border */}
-              <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary-500 to-accent-500 p-[2px]">
-                <div className="w-full h-full bg-dark-900 rounded-3xl" />
-              </div>
-
-              {/* Image Container */}
-              <div className="absolute inset-4 rounded-2xl overflow-hidden bg-gradient-to-br from-primary-500/20 to-accent-500/20">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  {/* Placeholder Avatar */}
-                  <div className="w-48 h-48 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center">
-                    <span className="text-6xl font-display font-bold text-white">AC</span>
-                  </div>
-                </div>
-
-                {/* Decorative Elements */}
-                <div className="absolute top-4 right-4 w-20 h-20 border border-white/20 rounded-full" />
-                <div className="absolute bottom-4 left-4 w-16 h-16 border border-white/20 rounded-full" />
-              </div>
-
-              {/* Floating Badge */}
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+          {/* Left Column - Fun Interactive Section */}
+          <motion.div
+            initial={{ opacity: 0, x: -30 }}
+            animate={isInView ? { opacity: 1, x: 0 } : {}}
+            transition={{ duration: 0.8 }}
+            className="space-y-8"
+          >
+            {/* Avatar with fun interaction */}
+            <div className="relative max-w-sm mx-auto lg:mx-0">
               <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={isInView ? { opacity: 1, x: 0 } : {}}
-                transition={{ duration: 0.6, delay: 0.4 }}
-                className="absolute -right-4 top-1/4 glass-card !p-4"
+                className="aspect-square rounded-3xl bg-gradient-to-br from-primary-500/20 to-accent-500/20 border border-white/10 flex items-center justify-center overflow-hidden"
+                whileHover={{ scale: 1.02 }}
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center">
-                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-white">Award Winner</p>
-                    <p className="text-xs text-dark-400">Awwwards 2024</p>
-                  </div>
+                <div className="text-center p-8">
+                  <motion.div
+                    className="text-8xl mb-4"
+                    animate={{ rotate: [0, 10, -10, 0] }}
+                    transition={{ duration: 2, repeat: Infinity, repeatDelay: 3 }}
+                  >
+                    👨‍💻
+                  </motion.div>
+                  <p className="text-xl font-display font-bold text-white">Khalid</p>
+                  <p className="text-dark-400 text-sm">Web Developer</p>
                 </div>
               </motion.div>
 
-              {/* Floating Badge 2 */}
+              {/* Floating fun badge */}
               <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={isInView ? { opacity: 1, x: 0 } : {}}
-                transition={{ duration: 0.6, delay: 0.6 }}
-                className="absolute -left-4 bottom-1/4 glass-card !p-4"
+                initial={{ opacity: 0, scale: 0 }}
+                animate={isInView ? { opacity: 1, scale: 1 } : {}}
+                transition={{ duration: 0.5, delay: 0.5 }}
+                className="absolute -right-4 -bottom-4 glass-card !p-3"
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-accent-500 to-primary-500 flex items-center justify-center">
-                    <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </div>
-                  <div>
-                    <p className="text-sm font-semibold text-white">Certified</p>
-                    <p className="text-xs text-dark-400">Google UX Design</p>
-                  </div>
+                <div className="flex items-center gap-2">
+                  <span className="text-2xl">🇲🇾</span>
+                  <span className="text-sm text-white font-medium">Malaysia</span>
                 </div>
               </motion.div>
-            </motion.div>
+            </div>
 
-            {/* Stats */}
+            {/* Interactive Coffee Counter - Fun Element! */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
-              transition={{ duration: 0.6, delay: 0.8 }}
-              className="grid grid-cols-2 gap-4 mt-8"
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="glass-card text-center"
             >
-              {stats.map((stat, index) => (
-                <motion.div
-                  key={stat.label}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ duration: 0.4, delay: 0.8 + index * 0.1 }}
-                  className="glass-card text-center"
+              <p className="text-dark-400 text-sm mb-3">Klik untuk bagi saya kopi! ☕</p>
+              <motion.button
+                onClick={addCoffee}
+                className="text-6xl mb-3 cursor-pointer hover:scale-110 transition-transform"
+                whileTap={{ scale: 0.9, rotate: -10 }}
+              >
+                ☕
+              </motion.button>
+              <p className="text-2xl font-display font-bold text-gradient">
+                {coffeeCount} kopi hari ini
+              </p>
+              {coffeeCount >= 5 && (
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="text-sm text-accent-400 mt-2"
                 >
-                  <p className="text-3xl md:text-4xl font-display font-bold text-gradient">{stat.number}</p>
-                  <p className="text-sm text-dark-400 mt-1">{stat.label}</p>
-                </motion.div>
-              ))}
+                  Wah, terima kasih banyak! 🚀
+                </motion.p>
+              )}
+              {coffeeCount >= 10 && (
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="text-sm text-primary-400 mt-1"
+                >
+                  Sekarang saya boleh code sampai subuh! 🌙
+                </motion.p>
+              )}
             </motion.div>
           </motion.div>
 
@@ -168,67 +153,88 @@ export default function About() {
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.2 }}
+              className="glass-card"
             >
-              <h3 className="text-2xl font-display font-bold text-white mb-4">
-                Hello, I&apos;m Alex Chen
+              <h3 className="text-xl font-display font-bold text-white mb-4">
+                Salam! 👋
               </h3>
               <p className="text-dark-400 leading-relaxed mb-4">
-                I&apos;m a passionate creative developer and designer based in San Francisco. I specialize in creating immersive digital experiences that push the boundaries of what&apos;s possible on the web.
+                Saya Khalid, seorang web developer dari Malaysia yang passionate dalam
+                membangunkan projek web yang <span className="text-primary-400">praktikal</span> dan{" "}
+                <span className="text-accent-400">mesra pengguna</span>.
               </p>
               <p className="text-dark-400 leading-relaxed">
-                My approach combines technical expertise with artistic vision, resulting in work that is both functionally robust and visually captivating. I believe in the power of design to solve complex problems and create meaningful connections.
+                Fokus saya adalah pada kegunaan sebenar - bukan sekadar cantik,
+                tetapi benar-benar membantu pengguna mencapai matlamat mereka dengan
+                cara yang paling ringkas dan berkesan.
               </p>
             </motion.div>
 
-            {/* Experience Timeline */}
+            {/* Fun Facts */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.4 }}
             >
-              <h4 className="text-lg font-semibold text-white mb-6">Experience</h4>
-              <div className="space-y-6">
-                {experiences.map((exp, index) => (
+              <h4 className="text-lg font-semibold text-white mb-4">Fun Facts</h4>
+              <div className="grid grid-cols-2 gap-3">
+                {funFacts.map((fact, index) => (
                   <motion.div
-                    key={exp.year}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={isInView ? { opacity: 1, x: 0 } : {}}
+                    key={fact.text}
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={isInView ? { opacity: 1, scale: 1 } : {}}
                     transition={{ duration: 0.4, delay: 0.5 + index * 0.1 }}
-                    className="relative pl-6 border-l-2 border-dark-700 hover:border-primary-500 transition-colors"
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    className="p-4 rounded-xl bg-white/5 border border-white/10 hover:border-primary-500/50 transition-all cursor-default"
                   >
-                    <div className="absolute -left-[9px] top-0 w-4 h-4 rounded-full bg-dark-900 border-2 border-primary-500" />
-                    <span className="text-sm text-primary-400 font-medium">{exp.year}</span>
-                    <h5 className="text-white font-semibold mt-1">{exp.role}</h5>
-                    <p className="text-dark-500 text-sm">{exp.company}</p>
-                    <p className="text-dark-400 text-sm mt-2">{exp.description}</p>
+                    <span className="text-2xl block mb-2">{fact.emoji}</span>
+                    <span className="text-sm text-dark-300">{fact.text}</span>
                   </motion.div>
                 ))}
               </div>
             </motion.div>
 
-            {/* CTA */}
+            {/* Tech Stack Pills */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.6, delay: 0.6 }}
+            >
+              <h4 className="text-lg font-semibold text-white mb-4">Tech Stack Kegemaran</h4>
+              <div className="flex flex-wrap gap-2">
+                {techStack.map((tech, index) => (
+                  <motion.span
+                    key={tech}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={isInView ? { opacity: 1, y: 0 } : {}}
+                    transition={{ duration: 0.3, delay: 0.7 + index * 0.05 }}
+                    whileHover={{ scale: 1.1, y: -2 }}
+                    className="px-4 py-2 rounded-full text-sm font-medium bg-gradient-to-r from-primary-500/20 to-accent-500/20 text-white border border-white/10 hover:border-primary-500/50 transition-all cursor-default"
+                  >
+                    {tech}
+                  </motion.span>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Rotating Quote */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={isInView ? { opacity: 1, y: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.8 }}
-              className="flex flex-wrap gap-4"
+              className="glass-card relative overflow-hidden"
             >
-              <motion.a
-                href="/resume.pdf"
-                className="btn-primary"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
+              <div className="absolute top-2 right-3 text-4xl opacity-20">💭</div>
+              <p className="text-sm text-dark-500 mb-2">Quote of the moment:</p>
+              <motion.p
+                key={currentQuote}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                className="text-dark-300 italic"
               >
-                Download Resume
-              </motion.a>
-              <motion.a
-                href="#contact"
-                className="btn-secondary"
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-              >
-                Let&apos;s Connect
-              </motion.a>
+                &ldquo;{quotes[currentQuote]}&rdquo;
+              </motion.p>
             </motion.div>
           </div>
         </div>

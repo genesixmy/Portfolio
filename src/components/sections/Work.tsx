@@ -1,79 +1,58 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { motion, useInView, AnimatePresence } from "framer-motion";
-import { cn } from "@/lib/utils";
-
-const categories = ["All", "Web Design", "Development", "Branding", "3D/Motion"];
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 
 const projects = [
   {
     id: 1,
-    title: "Nebula Finance",
-    category: "Web Design",
-    description: "A revolutionary fintech dashboard with real-time analytics and stunning data visualizations.",
-    image: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-    tags: ["React", "Three.js", "D3.js"],
+    title: "Rarebits",
+    emoji: "🧸",
+    category: "Management System",
+    description: "Sistem pengurusan jualan mainan terpakai. Mudahkan proses inventori, tracking jualan, dan pengurusan pelanggan.",
+    image: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
+    tags: ["Next.js", "PostgreSQL", "Prisma"],
+    features: ["Inventori Management", "Sales Tracking", "Customer Database"],
     link: "#",
-    featured: true,
   },
   {
     id: 2,
-    title: "Artisan Coffee Co.",
-    category: "Branding",
-    description: "Complete brand identity and e-commerce platform for a premium coffee roastery.",
-    image: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
-    tags: ["Next.js", "Shopify", "Figma"],
+    title: "DraftlyCV",
+    emoji: "📄",
+    category: "Resume Builder",
+    description: "Resume builder ringkas yang ATS-friendly dengan live viewing dan realtime preview. Bina CV profesional dalam minit!",
+    image: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+    tags: ["React", "TypeScript", "Tailwind"],
+    features: ["ATS-Friendly", "Live Preview", "Realtime Editing"],
     link: "#",
-    featured: true,
   },
   {
     id: 3,
-    title: "Quantum Studios",
-    category: "3D/Motion",
-    description: "Immersive 3D web experience showcasing architectural visualization projects.",
+    title: "Genesix Blog",
+    emoji: "🎮",
+    category: "Blog Platform",
+    description: "Blog gaming & esports untuk komuniti gamers Malaysia. Berita terkini, tips & tricks, dan review games.",
     image: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
-    tags: ["Three.js", "GSAP", "WebGL"],
+    tags: ["Next.js", "MDX", "Vercel"],
+    features: ["Gaming News", "Esports Coverage", "Game Reviews"],
     link: "#",
-    featured: true,
   },
   {
     id: 4,
-    title: "TechFlow SaaS",
-    category: "Development",
-    description: "Full-stack SaaS platform with advanced user management and payment integration.",
+    title: "ArenaHub",
+    emoji: "🏆",
+    category: "Event Platform",
+    description: "Platform info acara esukan untuk sekolah. Cari tournament, daftar pasukan, dan track keputusan pertandingan.",
     image: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
-    tags: ["Node.js", "PostgreSQL", "Stripe"],
-    link: "#",
-  },
-  {
-    id: 5,
-    title: "Zenith Wellness",
-    category: "Web Design",
-    description: "Calming, accessible wellness platform with booking system and resource library.",
-    image: "linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)",
-    tags: ["Next.js", "Tailwind", "Sanity"],
-    link: "#",
-  },
-  {
-    id: 6,
-    title: "Motion Studio",
-    category: "3D/Motion",
-    description: "Creative agency portfolio with fluid animations and scroll-triggered effects.",
-    image: "linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)",
-    tags: ["Framer Motion", "GSAP", "React"],
+    tags: ["Next.js", "Supabase", "Real-time"],
+    features: ["Tournament Finder", "Team Registration", "Live Scores"],
     link: "#",
   },
 ];
 
 export default function Work() {
-  const [activeCategory, setActiveCategory] = useState("All");
   const containerRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(containerRef, { once: true, margin: "-100px" });
-
-  const filteredProjects = activeCategory === "All"
-    ? projects
-    : projects.filter((project) => project.category === activeCategory);
 
   return (
     <section id="work" ref={containerRef} className="section-padding relative overflow-hidden">
@@ -90,164 +69,122 @@ export default function Work() {
           className="text-center mb-12"
         >
           <span className="inline-block px-4 py-1.5 mb-4 text-sm font-medium text-primary-400 bg-primary-500/10 border border-primary-500/20 rounded-full">
-            Featured Work
+            Projek Saya
           </span>
           <h2 className="text-4xl md:text-5xl lg:text-6xl font-display font-bold text-white mb-6">
-            Selected
-            <span className="text-gradient"> Projects</span>
+            Hasil
+            <span className="text-gradient"> Kerja</span>
           </h2>
           <p className="text-lg text-dark-400 max-w-2xl mx-auto">
-            A curated collection of my most impactful work, showcasing the intersection
-            of design excellence and technical innovation.
+            Koleksi projek web yang saya bangunkan - fokus pada fungsi praktikal dan pengalaman pengguna yang terbaik.
           </p>
         </motion.div>
 
-        {/* Category Filter */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.1 }}
-          className="flex flex-wrap justify-center gap-2 mb-12"
-        >
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => setActiveCategory(category)}
-              className={cn(
-                "px-5 py-2.5 rounded-lg text-sm font-medium transition-all duration-300",
-                activeCategory === category
-                  ? "bg-gradient-to-r from-primary-600 to-primary-500 text-white shadow-lg shadow-primary-500/25"
-                  : "bg-white/5 text-dark-400 hover:bg-white/10 hover:text-white border border-white/10"
-              )}
-            >
-              {category}
-            </button>
-          ))}
-        </motion.div>
-
         {/* Projects Grid */}
-        <motion.div layout className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <AnimatePresence mode="popLayout">
-            {filteredProjects.map((project, index) => (
-              <motion.article
-                key={project.id}
-                layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
-                className={cn(
-                  "group relative rounded-2xl overflow-hidden cursor-pointer",
-                  project.featured && "md:col-span-2 lg:col-span-1"
-                )}
-              >
-                {/* Image/Gradient Background */}
-                <div
-                  className="aspect-[4/3] w-full"
-                  style={{ background: project.image }}
-                >
-                  {/* Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-dark-950 via-dark-950/50 to-transparent opacity-80 group-hover:opacity-90 transition-opacity" />
+        <div className="grid md:grid-cols-2 gap-8">
+          {projects.map((project, index) => (
+            <motion.article
+              key={project.id}
+              initial={{ opacity: 0, y: 30 }}
+              animate={isInView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              className="group relative rounded-2xl overflow-hidden"
+            >
+              {/* Gradient Background */}
+              <div
+                className="absolute inset-0 opacity-20 group-hover:opacity-30 transition-opacity"
+                style={{ background: project.image }}
+              />
 
-                  {/* Content */}
-                  <div className="absolute inset-0 p-6 flex flex-col justify-end">
-                    {/* Category Badge */}
-                    <span className="self-start px-3 py-1 mb-3 text-xs font-medium text-primary-400 bg-primary-500/20 rounded-full">
-                      {project.category}
-                    </span>
-
-                    {/* Title */}
-                    <h3 className="text-xl font-display font-bold text-white mb-2 group-hover:text-gradient transition-colors">
-                      {project.title}
-                    </h3>
-
-                    {/* Description */}
-                    <p className="text-sm text-dark-400 mb-4 line-clamp-2">
-                      {project.description}
-                    </p>
-
-                    {/* Tags */}
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {project.tags.map((tag) => (
-                        <span
-                          key={tag}
-                          className="px-2 py-1 text-xs text-dark-300 bg-white/5 rounded"
-                        >
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-
-                    {/* Link */}
-                    <motion.a
-                      href={project.link}
-                      className="inline-flex items-center gap-2 text-sm font-medium text-white group/link"
-                      whileHover={{ x: 5 }}
+              {/* Content */}
+              <div className="relative glass-card !bg-white/5 h-full">
+                {/* Header */}
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <motion.span
+                      className="text-4xl"
+                      whileHover={{ scale: 1.2, rotate: [0, -10, 10, 0] }}
                     >
-                      View Project
-                      <svg
-                        className="w-4 h-4 transition-transform group-hover/link:translate-x-1"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M17 8l4 4m0 0l-4 4m4-4H3"
-                        />
-                      </svg>
-                    </motion.a>
+                      {project.emoji}
+                    </motion.span>
+                    <div>
+                      <h3 className="text-xl font-display font-bold text-white group-hover:text-gradient transition-all">
+                        {project.title}
+                      </h3>
+                      <span className="text-xs text-primary-400">{project.category}</span>
+                    </div>
                   </div>
-
-                  {/* Hover Border Effect */}
-                  <div className="absolute inset-0 border-2 border-transparent group-hover:border-primary-500/50 rounded-2xl transition-colors" />
                 </div>
-              </motion.article>
-            ))}
-          </AnimatePresence>
-        </motion.div>
 
-        {/* View All CTA */}
+                {/* Description */}
+                <p className="text-dark-400 mb-4 leading-relaxed">
+                  {project.description}
+                </p>
+
+                {/* Features */}
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {project.features.map((feature) => (
+                    <span
+                      key={feature}
+                      className="px-3 py-1 text-xs rounded-full bg-white/5 text-dark-300 border border-white/10"
+                    >
+                      {feature}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Tags */}
+                <div className="flex flex-wrap gap-2 mb-6">
+                  {project.tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="px-3 py-1.5 text-xs font-medium rounded-lg bg-gradient-to-r from-primary-500/20 to-accent-500/20 text-white border border-white/10"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+
+                {/* Link */}
+                <motion.a
+                  href={project.link}
+                  className="inline-flex items-center gap-2 text-sm font-medium text-white group/link"
+                  whileHover={{ x: 5 }}
+                >
+                  Lihat Projek
+                  <svg
+                    className="w-4 h-4 transition-transform group-hover/link:translate-x-1"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M17 8l4 4m0 0l-4 4m4-4H3"
+                    />
+                  </svg>
+                </motion.a>
+
+                {/* Hover Border Effect */}
+                <div className="absolute inset-0 border-2 border-transparent group-hover:border-primary-500/30 rounded-2xl transition-colors pointer-events-none" />
+              </div>
+            </motion.article>
+          ))}
+        </div>
+
+        {/* More Projects Coming */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="text-center mt-12"
-        >
-          <motion.a
-            href="#"
-            className="inline-flex items-center gap-2 px-6 py-3 text-sm font-medium text-dark-300 hover:text-white border border-white/10 hover:border-white/30 rounded-lg transition-all"
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            View All Projects
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </motion.a>
-        </motion.div>
-
-        {/* Testimonial */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.6, delay: 0.5 }}
-          className="mt-20 max-w-3xl mx-auto"
+          className="text-center mt-12"
         >
-          <div className="glass-card text-center">
-            <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-br from-primary-500 to-accent-500 flex items-center justify-center">
-              <span className="text-2xl font-display font-bold text-white">JD</span>
-            </div>
-            <blockquote className="text-xl md:text-2xl text-white font-light italic mb-6">
-              &ldquo;Alex transformed our vision into a stunning digital reality. The attention to detail
-              and innovative approach exceeded all expectations.&rdquo;
-            </blockquote>
-            <cite className="not-italic">
-              <span className="block text-white font-semibold">Jane Doe</span>
-              <span className="text-dark-400 text-sm">CEO, Nebula Finance</span>
-            </cite>
+          <div className="glass-card max-w-md mx-auto">
+            <p className="text-2xl mb-2">🚧</p>
+            <p className="text-white font-medium mb-1">Lebih banyak projek akan datang!</p>
+            <p className="text-dark-400 text-sm">Saya sentiasa bekerja pada projek baru. Stay tuned!</p>
           </div>
         </motion.div>
       </div>
