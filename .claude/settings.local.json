@@ -1,0 +1,35 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run dev:*)",
+      "Bash(npm run build)",
+      "Bash(npm run lint:*)",
+      "Bash(npm run start)",
+      "Bash(npm install)",
+      "Bash(tree:*)",
+      "Bash(nul)",
+      "Bash(xargs ls:*)",
+      "Bash(ls:*)",
+      "Bash(mkdir:*)",
+      "Bash(cd:*)",
+      "Read:*",
+      "Write:*",
+      "Edit:*",
+      "Glob:*",
+      "Grep:*",
+      "Bash(ls -la \"d:\\Portfolio-claude-portfolio-website-modern-stack-01GwGfz3x4HihaWhcJLHtfsE\\src\\constants\"\" && echo \"---\" && ls -la \"d:Portfolio-claude-portfolio-website-modern-stack-01GwGfz3x4HihaWhcJLHtfsEsrchooks\"\")",
+      "Bash(curl:*)",
+      "Bash(timeout 3 curl:*)",
+      "Bash(dir:*)",
+      "Bash(findstr:*)",
+      "Bash(lsof:*)",
+      "Bash(git init:*)",
+      "Bash(git config:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(find:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

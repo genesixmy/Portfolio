@@ -1,0 +1,213 @@
+{
+  "mcpServers": {
+    "project-tools": {
+      "command": "node",
+      "args": ["./.claude/mcp-servers/project-tools.js"],
+      "env": {
+        "PROJECT_ROOT": ".",
+        "NODE_ENV": "development"
+      }
+    },
+    "filesystem": {
+      "command": "node",
+      "args": ["./.claude/mcp-servers/filesystem.js"],
+      "env": {
+        "PROJECT_ROOT": ".",
+        "ALLOWED_PATHS": "src,public,docs,.claude"
+      }
+    },
+    "typescript": {
+      "command": "node",
+      "args": ["./.claude/mcp-servers/typescript.js"],
+      "env": {
+        "PROJECT_ROOT": ".",
+        "TS_CONFIG_PATH": "./tsconfig.json"
+      }
+    },
+    "testing": {
+      "command": "node",
+      "args": ["./.claude/mcp-servers/testing.js"],
+      "env": {
+        "PROJECT_ROOT": "."
+      }
+    }
+  },
+  "tools": {
+    "project-tools": [
+      {
+        "name": "run-dev-server",
+        "description": "Start the Next.js development server",
+        "input": {
+          "type": "object",
+          "properties": {
+            "port": {
+              "type": "number",
+              "description": "Port number (default: 3000)"
+            }
+          }
+        }
+      },
+      {
+        "name": "build-project",
+        "description": "Build the project for production",
+        "input": { "type": "object", "properties": {} }
+      },
+      {
+        "name": "run-linter",
+        "description": "Run ESLint to check code quality",
+        "input": {
+          "type": "object",
+          "properties": {
+            "fix": {
+              "type": "boolean",
+              "description": "Automatically fix issues"
+            }
+          }
+        }
+      },
+      {
+        "name": "get-project-info",
+        "description": "Get information about the project structure and dependencies",
+        "input": { "type": "object", "properties": {} }
+      }
+    ],
+    "filesystem": [
+      {
+        "name": "find-files",
+        "description": "Find files matching a pattern",
+        "input": {
+          "type": "object",
+          "properties": {
+            "pattern": {
+              "type": "string",
+              "description": "File pattern to search (e.g., '**/*.tsx')"
+            },
+            "directory": {
+              "type": "string",
+              "description": "Directory to search in (default: project root)"
+            }
+          },
+          "required": ["pattern"]
+        }
+      },
+      {
+        "name": "search-code",
+        "description": "Search for text in files",
+        "input": {
+          "type": "object",
+          "properties": {
+            "query": {
+              "type": "string",
+              "description": "Text to search for"
+            },
+            "fileType": {
+              "type": "string",
+              "description": "File type to search in (e.g., 'ts', 'tsx', 'css')"
+            }
+          },
+          "required": ["query"]
+        }
+      },
+      {
+        "name": "get-file-content",
+        "description": "Read content of a file",
+        "input": {
+          "type": "object",
+          "properties": {
+            "path": {
+              "type": "string",
+              "description": "Path to the file"
+            }
+          },
+          "required": ["path"]
+        }
+      }
+    ],
+    "typescript": [
+      {
+        "name": "get-type-errors",
+        "description": "Check for TypeScript type errors",
+        "input": { "type": "object", "properties": {} }
+      },
+      {
+        "name": "get-definitions",
+        "description": "Get type definitions for a symbol",
+        "input": {
+          "type": "object",
+          "properties": {
+            "symbol": {
+              "type": "string",
+              "description": "Symbol name to get definitions for"
+            }
+          },
+          "required": ["symbol"]
+        }
+      }
+    ],
+    "testing": [
+      {
+        "name": "run-unit-tests",
+        "description": "Run unit tests with Vitest",
+        "input": {
+          "type": "object",
+          "properties": {
+            "ui": {
+              "type": "boolean",
+              "description": "Run with UI dashboard"
+            },
+            "coverage": {
+              "type": "boolean",
+              "description": "Generate coverage report"
+            },
+            "watch": {
+              "type": "boolean",
+              "description": "Run in watch mode"
+            }
+          }
+        }
+      },
+      {
+        "name": "run-e2e-tests",
+        "description": "Run E2E tests with Playwright",
+        "input": {
+          "type": "object",
+          "properties": {
+            "ui": {
+              "type": "boolean",
+              "description": "Run with interactive UI"
+            },
+            "debug": {
+              "type": "boolean",
+              "description": "Run in debug mode"
+            }
+          }
+        }
+      },
+      {
+        "name": "analyze-bundle",
+        "description": "Analyze bundle size",
+        "input": { "type": "object", "properties": {} }
+      },
+      {
+        "name": "check-performance",
+        "description": "Check performance metrics",
+        "input": { "type": "object", "properties": {} }
+      },
+      {
+        "name": "check-code-quality",
+        "description": "Run comprehensive code quality checks",
+        "input": { "type": "object", "properties": {} }
+      },
+      {
+        "name": "get-coverage-report",
+        "description": "Get test coverage report",
+        "input": { "type": "object", "properties": {} }
+      },
+      {
+        "name": "list-test-files",
+        "description": "List all test files in project",
+        "input": { "type": "object", "properties": {} }
+      }
+    ]
+  }
+}
