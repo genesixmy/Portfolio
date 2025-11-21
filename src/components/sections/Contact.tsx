@@ -63,7 +63,7 @@ export default function Contact() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          access_key: "YOUR_ACCESS_KEY", // User needs to get this from web3forms.com
+          access_key: "2c7d6601-ab76-4511-adc5-b152dfa099b8",
           name: formState.name,
           email: formState.email,
           subject: `Portfolio Contact: ${formState.subject}`,
