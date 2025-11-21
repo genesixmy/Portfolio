@@ -3,8 +3,8 @@
  * Provides scroll progress and transforms for parallax and fade effects
  */
 
-import { useRef } from "react";
-import { useScroll, useTransform, MotionValue } from "framer-motion";
+import { useRef } from 'react';
+import { useScroll, useTransform, MotionValue } from 'framer-motion';
 
 interface ScrollAnimationOptions {
   offset?: [string, string];
@@ -15,7 +15,7 @@ interface ScrollAnimationOptions {
 interface ScrollAnimationReturn {
   containerRef: React.RefObject<HTMLDivElement>;
   scrollYProgress: MotionValue<number>;
-  y: MotionValue<number | string>;
+  y: MotionValue<any>;
   opacity: MotionValue<number>;
 }
 
@@ -24,19 +24,17 @@ interface ScrollAnimationReturn {
  * @param options Configuration for scroll animation behavior
  * @returns Object containing ref and motion values for animation
  */
-export function useScrollAnimation(
-  options?: ScrollAnimationOptions
-): ScrollAnimationReturn {
+export function useScrollAnimation(options?: ScrollAnimationOptions): ScrollAnimationReturn {
   const containerRef = useRef<HTMLDivElement>(null);
   const {
-    offset = ["start end", "end start"],
+    offset = ['start end', 'end start'],
     rangeY = [100, -100],
     rangeOpacity = [1, 0],
   } = options || {};
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: offset as [string, string],
+    offset: offset as any,
   });
 
   const y = useTransform(scrollYProgress, [0, 1], rangeY);
