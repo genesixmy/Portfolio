@@ -12,7 +12,8 @@ const projects = [
     title: "Rarebits",
     category: "Web App",
     description: "Sistem pengurusan jualan mainan terpakai. Mudahkan proses inventori, tracking jualan, dan pengurusan pelanggan.",
-    image: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
+    gradient: "linear-gradient(135deg, #f093fb 0%, #f5576c 100%)",
+    imageUrl: "/projects/rarebits.png", // Letak screenshot di public/projects/
     tags: ["Next.js", "PostgreSQL", "Prisma"],
     link: "#",
     featured: true,
@@ -22,7 +23,8 @@ const projects = [
     title: "DraftlyCV",
     category: "Tool",
     description: "Resume builder ringkas yang ATS-friendly dengan live viewing dan realtime preview. Bina CV profesional dalam minit.",
-    image: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+    gradient: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+    imageUrl: "/projects/draftlycv.png",
     tags: ["React", "TypeScript", "Tailwind"],
     link: "#",
     featured: true,
@@ -32,7 +34,8 @@ const projects = [
     title: "Genesix Blog",
     category: "Platform",
     description: "Blog gaming & esports untuk komuniti gamers Malaysia. Berita terkini, tips & tricks, dan review games.",
-    image: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
+    gradient: "linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)",
+    imageUrl: "/projects/genesix-blog.png",
     tags: ["Next.js", "MDX", "Vercel"],
     link: "#",
     featured: true,
@@ -42,7 +45,8 @@ const projects = [
     title: "ArenaHub",
     category: "Platform",
     description: "Platform info acara esukan untuk sekolah. Cari tournament, daftar pasukan, dan track keputusan pertandingan.",
-    image: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
+    gradient: "linear-gradient(135deg, #fa709a 0%, #fee140 100%)",
+    imageUrl: "/projects/arenahub.png",
     tags: ["Next.js", "Supabase", "Real-time"],
     link: "#",
   },
@@ -158,11 +162,23 @@ export default function Work() {
               >
                 {/* Image/Gradient Background */}
                 <div
-                  className="aspect-[16/10] w-full relative"
-                  style={{ background: project.image }}
+                  className="aspect-[16/10] w-full relative overflow-hidden"
+                  style={{ background: project.gradient }}
                 >
+                  {/* Project Screenshot - akan display bila ada gambar */}
+                  {project.imageUrl && (
+                    <img
+                      src={project.imageUrl}
+                      alt={project.title}
+                      className="absolute inset-0 w-full h-full object-cover object-top transition-transform duration-500 group-hover:scale-105"
+                      onError={(e) => {
+                        // Jika gambar tak ada, hide img element dan tunjuk gradient
+                        (e.target as HTMLImageElement).style.display = 'none';
+                      }}
+                    />
+                  )}
                   {/* Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-dark-950 via-dark-950/60 to-transparent opacity-90 group-hover:opacity-95 transition-opacity" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-dark-950 via-dark-950/70 to-dark-950/20 opacity-90 group-hover:opacity-85 transition-opacity" />
 
                   {/* Content */}
                   <div className="absolute inset-0 p-6 flex flex-col justify-end">
